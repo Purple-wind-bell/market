@@ -3,28 +3,28 @@ package com.jsyunsi.market.Dao;
 import java.util.ArrayList;
 import java.util.Iterator;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
-import com.jsyunsi.market.vo.ProductData;
+import com.jsyunsi.market.vo.Product;
 
 public class ProductDaoList implements ProductDaoInter {
-	ArrayList<ProductData> productlist = new ArrayList<ProductData>();
+	ArrayList<Product> productlist = new ArrayList<Product>();
 	private int amount = 0;// 用户数量
 	private int index = -1;// 指定用户的索引
 
 	{
-		this.add(new ProductData(1, "羽毛球拍", 250, 100));
-		this.add(new ProductData(2, "羽毛球", 130, 100));
-		this.add(new ProductData(3, "羽毛球鞋", 600, 100));
+		this.add(new Product(1, "羽毛球拍", 250, 100));
+		this.add(new Product(2, "羽毛球", 130, 100));
+		this.add(new Product(3, "羽毛球鞋", 600, 100));
 	}
 
-	public ArrayList<ProductData> getList() {
+	public ArrayList<Product> getList() {
 		return this.productlist;
 	}
 
 	@Override
-	public ProductData getProductWithId(int num) {
+	public Product getProductWithIndex(int index) {
 		// TODO Auto-generated method stub
-		if (this.Exists(num)) {
-			return this.getProductWithId(num);
+		if (this.isExists(index)) {
+			return productlist.get(index);
 		} else {
 			return null;
 		}
@@ -40,9 +40,9 @@ public class ProductDaoList implements ProductDaoInter {
 	@Override
 	public int getIndex(int num) {
 		// TODO Auto-generated method stub
-		Iterator<ProductData> iterator = productlist.iterator();
+		Iterator<Product> iterator = productlist.iterator();
 		while (iterator.hasNext()) {
-			ProductData temp = (ProductData) iterator.next();
+			Product temp = (Product) iterator.next();
 			if (temp.getNum() == num) {
 				this.index = productlist.indexOf(temp);
 				return this.index;
@@ -54,9 +54,9 @@ public class ProductDaoList implements ProductDaoInter {
 	@Override
 	public int getIndex(String name) {
 		// TODO Auto-generated method stub
-		Iterator<ProductData> iterator = productlist.iterator();
+		Iterator<Product> iterator = productlist.iterator();
 		while (iterator.hasNext()) {
-			ProductData temp = (ProductData) iterator.next();
+			Product temp = (Product) iterator.next();
 			if (temp.getName() == name) {
 				this.index = productlist.indexOf(temp);
 				return this.index;
@@ -66,7 +66,7 @@ public class ProductDaoList implements ProductDaoInter {
 	}
 
 	@Override
-	public boolean Exists(int index) {
+	public boolean isExists(int index) {
 		// TODO Auto-generated method stub
 		if (index >= 0 && index < productlist.size()) {
 			return true;
@@ -76,7 +76,7 @@ public class ProductDaoList implements ProductDaoInter {
 	}
 
 	@Override
-	public boolean add(ProductData product) {
+	public boolean add(Product product) {
 		// TODO Auto-generated method stub
 		if (productlist.contains(product)) {
 			return false;
@@ -88,10 +88,11 @@ public class ProductDaoList implements ProductDaoInter {
 	@Override
 	public boolean update(int num, String name, double price, int stock) {
 		// TODO Auto-generated method stub
-		ProductData product = new ProductData(num, name, price, stock);
-		if (this.Exists(num)) {
+		Product product = new Product(num, name, price, stock);
+		int index = this.getIndex(num);
+		if (this.isExists(index)) {
 			try {
-				this.productlist.set(this.getIndex(num), product);
+				this.productlist.set(index, product);
 				return true;
 			} catch (IndexOutOfBoundsException e) {
 				// TODO: handle exception
@@ -101,11 +102,12 @@ public class ProductDaoList implements ProductDaoInter {
 	}
 
 	@Override
-	public boolean delWithId(int num) {
+	public boolean delWithIndex(int num) {
 		// TODO Auto-generated method stub
-		if (this.Exists(num)) {
+		int index = this.getIndex(num);
+		if (this.isExists(index)) {
 			try {
-				productlist.remove(getIndex(num));
+				productlist.remove(index);
 				return true;
 			} catch (IndexOutOfBoundsException e) {
 				// TODO: handle exception
@@ -117,8 +119,8 @@ public class ProductDaoList implements ProductDaoInter {
 	@Override
 	public boolean updateStock(int index, int stock) {
 		// TODO Auto-generated method stub
-		if (Exists(index)) {
-			ProductData data = this.productlist.get(index);
+		if (isExists(index)) {
+			Product data = this.productlist.get(index);
 			data.setStock(stock);
 			return true;
 		} else {
@@ -129,8 +131,8 @@ public class ProductDaoList implements ProductDaoInter {
 	@Override
 	public boolean updatePrice(int index, int price) {
 		// TODO Auto-generated method stub
-		if (Exists(index)) {
-			ProductData data = this.productlist.get(index);
+		if (isExists(index)) {
+			Product data = this.productlist.get(index);
 			data.setPrice(price);
 			return true;
 		} else {

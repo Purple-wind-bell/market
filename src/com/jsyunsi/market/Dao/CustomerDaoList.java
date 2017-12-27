@@ -8,16 +8,18 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
-import com.jsyunsi.market.vo.CustomerData;
+import com.jsyunsi.market.vo.Customer;
 
 @SuppressWarnings("unchecked")
 public class CustomerDaoList implements CustomerDaoInter {
-	private static ArrayList<CustomerData> customerlist = new ArrayList<CustomerData>();
+	/** customer对象集合 */
+	private static ArrayList<Customer> customerlist = new ArrayList<>();
+	/** 文件存储 */
 	static File customerFile = new File("F:\\customerData.txt");
 	static ObjectInputStream ois = null;
-	private int amount = 0;// 用户数量
+	/** 用户数量 */
+	private int amount = 0;
 
 	static {
 		try {
@@ -26,10 +28,10 @@ public class CustomerDaoList implements CustomerDaoInter {
 			}
 			ois = new ObjectInputStream(new FileInputStream(customerFile));
 			// readList();
-			customerlist = (ArrayList<CustomerData>) ois.readObject();
+			customerlist = (ArrayList<Customer>) ois.readObject();
 		} catch (IOException | ClassNotFoundException e) {
 			// TODO Auto-generated catch block
-			System.out.println("空");
+			e.printStackTrace();
 		}
 	}
 
@@ -43,9 +45,9 @@ public class CustomerDaoList implements CustomerDaoInter {
 	@Override
 	public int getIndex(int cardNum) {
 		// TODO Auto-generated method stub
-		Iterator<CustomerData> iterator = customerlist.iterator();
+		Iterator<Customer> iterator = customerlist.iterator();
 		while (iterator.hasNext()) {
-			CustomerData temp = (CustomerData) iterator.next();
+			Customer temp = iterator.next();
 			if (temp.getCardNum() == cardNum) {
 				return customerlist.indexOf(temp);
 			}
@@ -56,9 +58,9 @@ public class CustomerDaoList implements CustomerDaoInter {
 	@Override
 	public int getIndex(String name) {
 		// TODO Auto-generated method stub
-		Iterator<CustomerData> iterator = customerlist.iterator();
+		Iterator<Customer> iterator = customerlist.iterator();
 		while (iterator.hasNext()) {
-			CustomerData temp = (CustomerData) iterator.next();
+			Customer temp = iterator.next();
 			if (temp.getName() == name) {
 				return customerlist.indexOf(temp);
 			}
@@ -67,7 +69,7 @@ public class CustomerDaoList implements CustomerDaoInter {
 	}
 
 	@Override
-	public CustomerData getCustomerWithIndex(int index) {
+	public Customer getCustomerWithIndex(int index) {
 		// TODO Auto-generated method stub
 		try {
 			return customerlist.get(index);
@@ -78,7 +80,7 @@ public class CustomerDaoList implements CustomerDaoInter {
 	}
 
 	@Override
-	public boolean Exists(int index) {
+	public boolean isExists(int index) {
 		// TODO Auto-generated method stub
 		if (index >= 0 && index < customerlist.size()) {
 			return true;
@@ -87,10 +89,10 @@ public class CustomerDaoList implements CustomerDaoInter {
 	}
 
 	@Override
-	public boolean add(CustomerData customer) {
+	public boolean add(Customer customer) {
 		// TODO Auto-generated method stub
 		int index = getIndex(customer.getCardNum());
-		if (!this.Exists(index) && (customerlist.add(customer))) {
+		if (!this.isExists(index) && (customerlist.add(customer))) {
 			writeList();
 			return true;
 		} else {
@@ -101,10 +103,11 @@ public class CustomerDaoList implements CustomerDaoInter {
 	@Override
 	public boolean update(int cardNum, String name, String phone) {
 		// TODO Auto-generated method stub
-		CustomerData customer = new CustomerData(cardNum, name, phone);
-		if (this.Exists(cardNum)) {
+		Customer customer = new Customer(cardNum, name, phone);
+		int index = this.getIndex(cardNum);
+		if (this.isExists(index)) {
 			try {
-				customerlist.set(this.getIndex(cardNum), customer);
+				customerlist.set(index, customer);
 				writeList();
 				return true;
 			} catch (IndexOutOfBoundsException e) {
@@ -116,7 +119,7 @@ public class CustomerDaoList implements CustomerDaoInter {
 
 	public boolean delWithIndex(int index) {
 		// TODO Auto-generated method stub
-		if (this.Exists(index)) {
+		if (this.isExists(index)) {
 			customerlist.remove(index);
 			writeList();
 			return true;
@@ -132,21 +135,20 @@ public class CustomerDaoList implements CustomerDaoInter {
 			ObjectOutputStream oos = new ObjectOutputStream(new FileOutputStream(customerFile));
 			oos.writeObject(customerlist);
 			oos.flush();
+			return true;
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
+			return false;
 		}
-		return true;
 	}
 
 	public static boolean readList() {
 		// TODO Auto-generated method stub
 		try {
-			customerlist = (ArrayList<CustomerData>) ois.readObject();
+			customerlist = (ArrayList<Customer>) ois.readObject();
 			return true;
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
-			e.printStackTrace();
 			return false;
 		}
 	}
