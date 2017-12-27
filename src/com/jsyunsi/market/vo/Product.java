@@ -1,17 +1,23 @@
 package com.jsyunsi.market.vo;
 
-public class ProductData {
-	// 商品属性
-	private int num;// 编号
-	private String name;// 名称
-	private double price;// 价格
-	private int stock;// 库存
+public class Product {
+	/** 商品属性 */
+	/** 编号 */
+	private int num;
+	/** 名称 */
+	private String name;
+	/** 价格 */
+	private double price;
+	/** 库存 */
+	private int stock;
 
-	// 构造函数
-	public ProductData() {
+	/**
+	 * 构造函数
+	 */
+	public Product() {
 	}
 
-	public ProductData(int num, String name, double price, int stock) {
+	public Product(int num, String name, double price, int stock) {
 		this.num = num;
 		this.name = name;
 		this.price = price;
@@ -57,21 +63,23 @@ public class ProductData {
 			return false;
 		}
 	}
-	
+
 	@Override
-	/*
-	 * (non-Javadoc)
-	 * 
-	 * @see java.lang.Object#toString() 显示全部属性
-	 */
-	public String toString() {
-		// TODO Auto-generated method stub
-		return "[ num = " + this.num + "\tname = " + this.name + "\tprice = "
-				+ this.price + "\tstock = " + this.stock + " ]";
+	public boolean equals(Object product) {
+		if (this == product) {
+			return true;
+		}
+		if (product == null || getClass() != product.getClass()) {
+			return false;
+		}
+		Product cust = (Product) product;
+		return this.num == cust.num;
 	}
 
-	public String toStringLite() {
+	@Override
+	public int hashCode() {
 		// TODO Auto-generated method stub
-		return (this.num + "\t" + this.name + "\t\t" + this.price + "\t\t" + this.stock);
+		return super.hashCode();
 	}
+
 }

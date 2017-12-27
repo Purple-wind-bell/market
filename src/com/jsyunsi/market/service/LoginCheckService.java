@@ -1,11 +1,11 @@
 package com.jsyunsi.market.service;
 
 import java.util.Scanner;
-import com.jsyunsi.market.vo.AdminData;
+import com.jsyunsi.market.vo.Admin;
 
 public class LoginCheckService {
 	private Scanner scan = new Scanner(System.in);
-	private AdminData admin = new AdminData();
+	private Admin admin = new Admin();
 	private static int errorCount = 0;
 
 	// 登录判断

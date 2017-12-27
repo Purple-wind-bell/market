@@ -3,7 +3,7 @@ package com.jsyunsi.market.service;
 import java.util.Scanner;
 import com.jsyunsi.market.Dao.CustomerDaoList;
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
-import com.jsyunsi.market.vo.CustomerData;
+import com.jsyunsi.market.vo.Customer;
 
 //public class CustomerService extends CustomerIO {
 public class CustomerService {
@@ -52,13 +52,13 @@ public class CustomerService {
 	public void showAll() {
 		System.out.println("卡号\t姓名\t手机");
 		for (int i = 0; i < custInter.getAmount(); i++) { // 遍历打印所有客户信息
-			System.out.println(custInter.getCustomerWithIndex(i).toStringLite());
+			System.out.println(custInter.getCustomerWithIndex(i).toString());
 		}
 	}
 
 	private void showById(int cardNum) {
 		System.out.println("卡号\t姓名\t手机");
-		System.out.println(custInter.getCustomerWithIndex(custInter.getIndex(cardNum)).toStringLite());
+		System.out.println(custInter.getCustomerWithIndex(custInter.getIndex(cardNum)).toString());
 	}
 
 	public void add() {
@@ -67,13 +67,13 @@ public class CustomerService {
 			System.out.println("当前用户数：" + custInter.getAmount());
 			this.input();
 			// --------------
-			if (!custInter.Exists(this.cardNum)) {// 判断该用户是否已经存在
+			if (!custInter.isExists(this.cardNum)) {// 判断该用户是否已经存在
 				System.out.println("该卡号不存在用户，可以添加。");// 不存在
 				System.out.println("请输入姓名：");
 				this.name = scan.next();
 				System.out.println("请输入电话：");
 				this.phone = scan.next();
-				if (custInter.add(new CustomerData(cardNum, name, phone))) {
+				if (custInter.add(new Customer(cardNum, name, phone))) {
 					System.out.println("添加成功");
 				} else {
 					System.out.println("添加失败");
@@ -91,7 +91,7 @@ public class CustomerService {
 		while (flag) {
 			System.out.println("请输入客户卡号：");// 查询该客户是否存在
 			this.input();
-			if (custInter.Exists(this.cardNum)) {// 若存在,显示信息
+			if (custInter.isExists(this.cardNum)) {// 若存在,显示信息
 				System.out.println("查询的客户存在！");
 				this.showById(this.cardNum);
 			} else {
@@ -106,7 +106,7 @@ public class CustomerService {
 		while (this.flag) {
 			System.out.println("请输入客户卡号：");
 			this.input();
-			if (custInter.Exists(this.cardNum)) {// 判断该用户是否已经存在
+			if (custInter.isExists(this.cardNum)) {// 判断该用户是否已经存在
 				this.showById(this.cardNum);
 				System.out.println("该卡号存在用户，可以修改。");// 存在
 				System.out.println("请输入姓名：");
@@ -131,9 +131,9 @@ public class CustomerService {
 			System.out.println("请输入客户卡号：");
 			this.input();
 			int index = custInter.getIndex(this.cardNum);
-			if (custInter.Exists(index)) {// 判断该用户是否已经存在
+			if (custInter.isExists(index)) {// 判断该用户是否已经存在
 				System.out.println("卡号\t姓名\t手机");
-				System.out.println(custInter.getCustomerWithIndex(index).toStringLite());
+				System.out.println(custInter.getCustomerWithIndex(index).toString());
 				// 存在,判断是否删除
 				System.out.println("是否确认删除？(y/n)");
 				switch (scan.next()) {

@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.Scanner;
 import com.jsyunsi.market.Dao.ProductDaoList;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
-import com.jsyunsi.market.vo.ProductData;
+import com.jsyunsi.market.vo.Product;
 
 public class Shopping {
 	private Scanner scan = new Scanner(System.in);
@@ -14,6 +14,7 @@ public class Shopping {
 	private int amountPayable;// 应付金额,取整
 	private double amountPaid;// 实缴金额
 	private double change;// 找零
+	int index;
 	private int num;// 商品编号
 	private double price;// 商品价格
 	private int stock;// 商品库存
@@ -33,9 +34,9 @@ public class Shopping {
 		System.out.println("***************结算系统**************");
 		System.out.println();
 		System.out.println("商品编号\t商品名称\t\t商品价格\t\t商品库存");
-		ArrayList<ProductData> prolist = productDaoInter.getList();
+		ArrayList<Product> prolist = productDaoInter.getList();
 		for (int i = 0; i < productDaoInter.getAmount(); i++) {
-			System.out.println(prolist.get(i).toStringLite());
+			System.out.println(prolist.get(i).toString());
 		}
 		System.out.println();
 		System.out.println("***********************************");
@@ -82,13 +83,13 @@ public class Shopping {
 
 	// 获得并打印商品信息
 	private void printInformation() {
-		ProductData pro = productDaoInter.getProductWithId(this.num);
+		Product pro = productDaoInter.getProductWithIndex(this.index);
 		this.name = pro.getName();// 获得商品信息
 		this.price = pro.getPrice();
 		this.stock = pro.getStock();
 		// 打印商品信息
 		System.out.println("商品信息：\t" + "编号\t" + "名称\t" + "价格\t");
-		System.out.println(pro.toStringLite());
+		System.out.println(pro.toString());
 	}
 
 	// 空库存判断
@@ -189,7 +190,8 @@ public class Shopping {
 			}
 
 			// -------
-			if (productDaoInter.Exists(productDaoInter.getIndex(num))) {// 商品是否存在等信息查询及输出
+			index = productDaoInter.getIndex(num);
+			if (productDaoInter.isExists(index)) {// 商品是否存在等信息查询及输出
 				this.printInformation();
 				break;
 			} else {

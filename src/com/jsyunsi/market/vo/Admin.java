@@ -1,10 +1,10 @@
 package com.jsyunsi.market.vo;
 
-public class AdminData {
+public class Admin {
 	private String user = "admin";
 	private String passwd = "123";
 
-	public AdminData() {
+	public Admin() {
 		super();
 	}
 
