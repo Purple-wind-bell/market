@@ -28,11 +28,8 @@ public class LoginView {
 	public void jump() {
 		while (true) {
 			this.LoginShow();
-			// int key = scan.nextInt();
 			switch (scan.next()) {
 			case "1":
-				// LoginCheckService login = new LoginCheckService();
-				// if (login.Check()) {
 				if (new LoginCheckService().Check()) {
 					MenuView menu = new MenuView();// 登录MenuView
 					menu.jump();

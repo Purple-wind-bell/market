@@ -67,7 +67,7 @@ public class CustomerDaoList implements CustomerDaoInter {
 	}
 
 	@Override
-	public Customer getCustomerWithIndex(int index) {
+	public Customer getWithIndex(int index) {
 		// TODO Auto-generated method stub
 		try {
 			return customerlist.get(index);

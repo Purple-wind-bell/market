@@ -14,8 +14,7 @@ import com.jsyunsi.market.vo.Customer;
 import com.jsyunsi.market.vo.Product;
 
 public class ProductDaoList implements ProductDaoInter {
-	static ArrayList<Product> productlist = new ArrayList<Product>();
-	private int amount = 0;// 用户数量
+	static ArrayList<Product> productlist = new ArrayList<>();
 	private int index = -1;// 指定用户的索引
 	/** 文件存储 */
 	static File productFile = new File("F:\\productData.txt");
@@ -46,7 +45,7 @@ public class ProductDaoList implements ProductDaoInter {
 	}
 
 	@Override
-	public Product getProductWithIndex(int index) {
+	public Product getWithIndex(int index) {
 		// TODO Auto-generated method stub
 		if (this.isExists(index)) {
 			return productlist.get(index);
@@ -58,8 +57,7 @@ public class ProductDaoList implements ProductDaoInter {
 	@Override
 	public int getAmount() {
 		// TODO Auto-generated method stub
-		this.amount = productlist.size();
-		return this.amount;
+		return productlist.size();
 	}
 
 	@Override
@@ -111,10 +109,10 @@ public class ProductDaoList implements ProductDaoInter {
 	}
 
 	@Override
-	public boolean update(int num, String name, double price, int stock) {
+	public boolean update(Product product) {
 		// TODO Auto-generated method stub
 		Product product = new Product(num, name, price, stock);
-		int index = this.getIndex(num);
+		int index = productlist.ind
 		if (this.isExists(index)) {
 			try {
 				productlist.set(index, product);

@@ -79,6 +79,6 @@ public interface DataInter<T> {
 	 *            新的数据对象
 	 * @return true:修改成功
 	 */
-	boolean update(T t);
+	boolean update(int num,T t);
 
 }

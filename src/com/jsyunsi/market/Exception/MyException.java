@@ -1,6 +1,6 @@
 package com.jsyunsi.market.Exception;
 
-public class MyException extends Throwable {
+public class MyException extends Exception {
 
 	/**
 	 * 
@@ -10,7 +10,7 @@ public class MyException extends Throwable {
 	@Override
 	public void printStackTrace() {
 		// TODO Auto-generated method stub
-//		System.out.println("输入格式错误！请重新输入");
+		System.out.println("输入格式错误！请重新输入");
 	}
 
 }
