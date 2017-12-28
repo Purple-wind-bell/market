@@ -1,4 +1,4 @@
-package com.jsyunsi.market.service;
+package com.jsyunsi.market.Exception;
 
 public class MyException extends Throwable {
 
