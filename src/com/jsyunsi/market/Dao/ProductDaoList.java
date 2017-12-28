@@ -8,14 +8,14 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
-import com.jsyunsi.market.Configure.Config;
+import com.jsyunsi.market.Configure.Constant;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
 import com.jsyunsi.market.vo.Product;
 
 public class ProductDaoList implements ProductDaoInter {
 	static ArrayList<Product> productlist = new ArrayList<>();
 	/** 文件存储 */
-	static File productFile = Config.getProductFile();
+	static File productFile = new File(Constant.getProdUrl());
 	static ObjectInputStream ois = null;
 
 	{

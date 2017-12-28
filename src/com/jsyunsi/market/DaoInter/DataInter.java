@@ -5,9 +5,9 @@ import java.util.ArrayList;
 public interface DataInter<T> {
 
 	/**
-	 * 获取T集合
+	 * 获取获得所有T对象的集合
 	 * 
-	 * @return T集合
+	 * @return T对象的集合
 	 */
 	ArrayList<T> getList();
 

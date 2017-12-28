@@ -1,60 +1,59 @@
 package com.jsyunsi.market.view;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import com.jsyunsi.market.Dao.ProductDaoList;
 import com.jsyunsi.market.DaoInter.DataInter;
+import com.jsyunsi.market.service.SettleService;
+import com.jsyunsi.market.serviceInter.SettleInter;
 import com.jsyunsi.market.vo.Product;
+import com.jsyunsi.market.vo.SettleMessage;
 
 public class Shopping {
 	private Scanner scan = new Scanner(System.in);
-	private int quantity;// 商品数量
-	private double total;// 总价
-	private double discount;// 折扣
-	private int amountPayable;// 应付金额,取整
-	private double amountPaid;// 实缴金额
-	private double change;// 找零
-	int index;
-	private int num;// 商品编号
-	private double price;// 商品价格
-	private int stock;// 商品库存
-	@SuppressWarnings("unused")
-	private String name;// 商品名称
-	private boolean flag = true;//
-	private static Shopping shop = new Shopping();
+	private boolean flag = true;
+	ArrayList<Product> list = new ArrayList<>();
 	DataInter<Product> productDaoInter = new ProductDaoList();
+	SettleInter<SettleMessage, Product> settle = new SettleService();
+	SettleMessage message = null;
 
-	// 折扣使用
-	private void useDiscount(double dis) {
-		boolean t = true;
-		while (t) {
-			System.out.println("是否使用折扣？(y/n)");
-			switch (scan.next()) {
-			case "y":
-				this.discount = dis;
+	/**
+	 * 是否使用折扣
+	 * 
+	 * @param dis
+	 *            折扣
+	 * @return 折扣值
+	 */
+	private double useDiscount(double dis) {
+		while (true) {
+			System.out.println("是否使用折扣？(Y/N)");
+			switch (scan.next().toUpperCase()) {
+			case "Y":
 				System.out.println("折扣已使用！");
-				t = false;
-				break;
-			case "n":
-				this.discount = 1;
+				return dis;
+			case "N":
 				System.out.println("未使用折扣！");
-				t = false;
-				break;
+				return 1;
 			default:
-				System.out.println("输入错误");
+				System.out.println("输入错误，请重新输入：");
 				break;
 			}
 		}
 	}
 
-	// 是否继续
-	private boolean next() {
+	/**
+	 * 是否继续
+	 * 
+	 * @return true:继续
+	 */
+	private boolean goNext() {
 		while (true) {
-			System.out.println("是否继续？(y/n)");
-			switch (scan.next()) {
-			case "y":
+			System.out.println("是否继续？(Y/N)");
+			switch (scan.next().toUpperCase()) {
+			case "Y":
 				return true;
-			case "n":
+			case "N":
 				return false;
 			default:
 				System.out.println("输入错误，请重新输入：");
@@ -63,143 +62,134 @@ public class Shopping {
 		}
 	}
 
-	// 获得并打印商品信息
-	private void printInformation() {
-		Product pro = productDaoInter.getWithIndex(this.index);
-		this.name = pro.getName();// 获得商品信息
-		this.price = pro.getPrice();
-		this.stock = pro.getStock();
-		// 打印商品信息
-		System.out.println("商品信息：\t" + "编号\t" + "名称\t" + "价格\t");
-		System.out.println(pro.toString());
-	}
-
-	// 空库存判断
-	@SuppressWarnings("unused")
-	private boolean isEmptyStock() {
-		if (this.stock == 0) {
-			System.out.println("该商品零库存");
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	// 商品库存判断
-	private boolean stockCheck() {
-		// --商品数量输入
+	/**
+	 * 商品库存判断
+	 * 
+	 * @param product
+	 *            商品
+	 * @return true：库存充足
+	 */
+	private boolean stockCheck(Product product) {
 		while (true) {
-			System.out.println("请输入商品数量：");
+			System.out.println("请输入商品数量：");// --商品数量输入
+			int quantity;
 			try {
-				this.quantity = scan.nextInt();
+				quantity = scan.nextInt();
+				if (quantity <= product.getStock()) {// --库存判断
+					int index = list.indexOf(product);
+					list.get(index).setStock(quantity);
+					return true;
+				} else {
+					System.out.println("商品库存不足，请重新输入！");// 商品库存不足则重新输入
+					System.out.println("当前库存：" + product.getStock());
+				}
 			} catch (Exception e) {
 				// TODO: handle exception
 				System.out.println("输入格式错误！请重新输入");
 				scan = new Scanner(System.in);
-				continue;
-			}
-
-			// --库存判断
-			if (this.quantity <= this.stock) {
-				this.total += this.quantity * this.price;// 计算总价
-				return true;
-			} else {
-				System.out.println("商品库存不足，请重新输入！");// 商品库存不足则重新输入
-				System.out.println("当前库存：" + this.stock);
 			}
 		}
 	}
 
-	// 结算金额计算
-	private void Cal() {
-		this.amountPayable = (int) (this.discount * this.total);// 应付金额
+	/**
+	 * 结算金额计算
+	 * 
+	 * @param dis
+	 *            折扣
+	 */
+	private void pay(double dis) {
+		double amountPaid;
 		while (true) {
 			System.out.println("请输入实缴金额：");
 			try {
-				this.amountPaid = scan.nextDouble();
+				amountPaid = scan.nextDouble();
+				message = settle.getSettleMessage(list, amountPaid, dis);
+				if (message.getChange() < 0) {// 判断实缴金额是否足够支付
+					System.out.println("实缴金额不足，重新输入！");
+					System.out.println("应付金额：" + message.getAmountPayable());
+				} else {
+					break;
+				}
 			} catch (Exception e) {
-				// TODO: handle exception
 				System.out.println("输入格式错误，请重新输入");
 				scan = new Scanner(System.in);
 				continue;
 			}
-			//
-			this.change = this.amountPaid - this.amountPayable;// 找零
-			if (this.change < 0) {// 判断实缴金额是否足够支付
-				System.out.println("实缴金额不足，重新输入！");
-				System.out.println("应付金额：" + this.amountPayable);
-			} else {
-				break;
-			}
 		}
 	}
 
-	// 打印小票
+	/**
+	 * 打印小票
+	 */
 	private void printReceipt() {
 		System.out.println("**************商品结算信息**************\n");
-		System.out.println("商品总价：" + this.total);
-		System.out.println("购物折扣：" + this.discount);
-		System.out.println("应付金额：" + this.amountPayable);
-		System.out.println("实缴金额：" + this.amountPaid);
-		System.out.println("找零：" + this.change + "\n");
+		System.out.println("商品总价：" + message.getTotal());
+		System.out.println("购物折扣：" + message.getDiscount());
+		System.out.println("应付金额：" + message.getAmountPayable());
+		System.out.println("实缴金额：" + message.getAmountPaid());
+		System.out.println("找零：" + message.getChange() + "\n");
 		System.out.println("*************************************\n");
 		System.out.println("程序结束，结算完成。");
 	}
 
-	// 是否返回上一级
-	private void comeBack() {
-		if (this.next()) {
-			Shopping shop = new Shopping();// 重新开始结算
-			shop.settlement(this.discount);
-		} else {
-			System.out.println("退出成功！");
-		}
-	}
-
+	/**
+	 * 输入商品信息
+	 */
 	private void inputProduct() {
-		System.out.println("商品编号\t商品名称\t\t商品价格\t\t商品库存");
+		System.out.println("商品编号\t商品名称\t\t商品价格\t\t商品库存");// 打印所有商品信息
 		ArrayList<Product> prolist = productDaoInter.getList();
-		for (int i = 0; i < productDaoInter.getAmount(); i++) {
-			System.out.println(prolist.get(i).toString());
+		Iterator<Product> iterator = prolist.iterator();
+		while (iterator.hasNext()) {
+			Product product = iterator.next();
+			System.out.println(product.toString());
 		}
-		this.flag = true;
-		while (this.flag) {
-			// 结算商品输入
-			System.out.println("请输入商品编号：");
+		flag = true;
+		while (flag) {
+			System.out.println("请输入商品编号：");// 结算商品输入
 			try {
-				this.num = scan.nextInt();
+				int num = scan.nextInt();// 商品编号
+				int index = productDaoInter.getIndex(num);
+				if (productDaoInter.isExists(index)) {// 商品是否存在等信息查询及输出
+					Product p = productDaoInter.getWithIndex(index);
+					System.out.println("商品信息：\t" + "编号\t" + "名称\t" + "价格\t");
+					System.out.println(p.toString());// 打印商品信息
+					list.add(p);// 将结算商品添加到结算目录
+				} else {
+					System.out.println("商品不存在!");// 商品不存在则重新输入商品信息
+					flag = this.goNext();
+				}
 			} catch (Exception e) {
 				// TODO: handle exception
 				System.out.println("输入格式错误！");
 				scan = new Scanner(System.in);
-				this.flag = this.next();
-				continue;
-			}
-			index = productDaoInter.getIndex(num);
-			if (productDaoInter.isExists(index)) {// 商品是否存在等信息查询及输出
-				this.printInformation();
-				break;
-			} else {
-				System.out.println("商品不存在!");// 商品不存在则重新输入商品信息
-				this.flag = this.next();
+				flag = this.goNext();
 			}
 		}
 	}
 
-	// 结算
-	public void settlement(double discount) {
+	/**
+	 * 结算界面
+	 * 
+	 * @param dis
+	 *            折扣值
+	 */
+	public void settlement(double dis) {
 		System.out.println("***************结算系统**************");
 		System.out.println();
 		System.out.println();
 		System.out.println("***********************************");
 		do {
 			this.inputProduct();
-			this.stockCheck();
-		} while (this.next());
-		// 折扣
-		this.useDiscount(discount);
-		this.Cal();
+			this.stockCheck(list.get(list.size() - 1));
+		} while (this.goNext());
+		double discount = this.useDiscount(dis);
+		this.pay(discount);
 		this.printReceipt();
-		this.comeBack();
+		if (this.goNext()) {// 是否返回上一级
+			Shopping shop = new Shopping();// 重新开始结算
+			shop.settlement(dis);
+		} else {
+			System.out.println("退出成功！");
+		}
 	}
 }

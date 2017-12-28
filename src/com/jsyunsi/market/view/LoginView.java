@@ -45,6 +45,7 @@ public class LoginView {
 		} else {
 			wrongNum = 0;
 			try {
+				System.out.println("锁定5秒！");
 				Thread.sleep(5000);// 程序休眠5秒
 			} catch (InterruptedException e) {
 				// TODO Auto-generated catch block

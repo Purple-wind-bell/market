@@ -82,4 +82,9 @@ public class Product {
 		return super.hashCode();
 	}
 
+	@Override
+	public String toString() {
+		return "[ num = " + this.num + "	name = " + this.name + "	price = " + this.price + "	stock = "
+				+ this.stock + " ]";
+	}
 }

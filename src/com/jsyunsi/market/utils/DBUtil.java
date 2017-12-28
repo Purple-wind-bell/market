@@ -4,6 +4,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
 
+import com.jsyunsi.market.Configure.Constant;
+
 /**
  * 数据库连接及释放的工具类
  * 
@@ -11,10 +13,6 @@ import java.sql.SQLException;
  *
  */
 public class DBUtil {
-	static String url = "jdbc:mysql://localhost:3306/user";
-	static String user = "root";
-	static String pass = "123456";
-
 	private DBUtil() {
 	}
 
@@ -22,7 +20,8 @@ public class DBUtil {
 		Connection connection = null;
 		try {
 			Class.forName("com.mysql.jdbc.Driver");
-			connection = DriverManager.getConnection(url, user, pass);
+			connection = DriverManager.getConnection(Constant.getMysqlUrl(), Constant.getMysqlUser(),
+					Constant.getMysqlPasswd());
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
