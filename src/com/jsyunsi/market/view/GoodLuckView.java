@@ -12,6 +12,7 @@ public class GoodLuckView {
 	 * 
 	 * @return 折扣值
 	 */
+	@SuppressWarnings("resource")
 	public double lotteryView() {
 		Scanner scan = new Scanner(System.in);
 		System.out.println("****************抽奖系统**************");
@@ -23,7 +24,7 @@ public class GoodLuckView {
 			String input = scan.next();
 			switch (input.toUpperCase()) {
 			case "Y":
-				discount = GoodLuckService.lottery(true);// 生成幸运值
+				discount =new GoodLuckService().lottery(true);// 生成幸运值
 				if (discount < 0.7) {
 					System.out.println("谢谢惠顾");
 				} else {

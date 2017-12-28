@@ -1,13 +1,8 @@
 package com.jsyunsi.market.service;
 
-public final class GoodLuckService {
+import com.jsyunsi.market.serviceInter.GoodLuckServiceInter;
 
-	/**
-	 * 私有化构造方法
-	 */
-	private GoodLuckService() {
-
-	}
+public final class GoodLuckService implements GoodLuckServiceInter {
 
 	/**
 	 * 抽奖方法
@@ -16,7 +11,7 @@ public final class GoodLuckService {
 	 *            抽奖的请求参数，true表示进行抽奖
 	 * @return 以小数形式表示的折扣值
 	 */
-	public static double lottery(boolean askForLottery) {
+	public double lottery(boolean askForLottery) {
 		/** 折扣属性 */
 		double dis = 1;
 		if (askForLottery) {

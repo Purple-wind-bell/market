@@ -17,8 +17,6 @@ public class CustomerDaoList implements CustomerDaoInter {
 	/** 文件存储 */
 	static File customerFile = new File("F:\\customerData.txt");
 	static ObjectInputStream ois = null;
-	/** 用户数量 */
-	private int amount = 0;
 
 	static {
 		try {
@@ -36,8 +34,13 @@ public class CustomerDaoList implements CustomerDaoInter {
 	@Override
 	public int getAmount() {
 		// TODO Auto-generated method stub
-		this.amount = customerlist.size();
-		return this.amount;
+		return customerlist.size();
+	}
+
+	@Override
+	public ArrayList<Customer> getList() {
+		// TODO Auto-generated method stub
+		return customerlist;
 	}
 
 	@Override
@@ -99,9 +102,8 @@ public class CustomerDaoList implements CustomerDaoInter {
 	}
 
 	@Override
-	public boolean update(int cardNum, String name, String phone) {
+	public boolean update(int cardNum, Customer customer) {
 		// TODO Auto-generated method stub
-		Customer customer = new Customer(cardNum, name, phone);
 		int index = this.getIndex(cardNum);
 		if (this.isExists(index)) {
 			try {
