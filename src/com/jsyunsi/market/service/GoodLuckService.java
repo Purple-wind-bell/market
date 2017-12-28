@@ -2,6 +2,12 @@ package com.jsyunsi.market.service;
 
 import com.jsyunsi.market.serviceInter.GoodLuckServiceInter;
 
+/**
+ * 抽奖服务类
+ * 
+ * @author Administrator
+ *
+ */
 public final class GoodLuckService implements GoodLuckServiceInter {
 
 	/**

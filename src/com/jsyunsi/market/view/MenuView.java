@@ -1,13 +1,19 @@
 package com.jsyunsi.market.view;
 
 import java.util.Scanner;
-import com.jsyunsi.market.service.GoodLuckService;
 
+/**
+ * 菜单
+ * 
+ * @author Administrator
+ *
+ */
 public class MenuView {
+	/** 商品折扣 */
+	private double discount = 1;
 	private Scanner scan = new Scanner(System.in);
-	private double discount = 1;// 商品折扣
 
-	public void Menu() {
+	public void menu() {
 		System.out.println("************天猫超市->购物管理系统*************");
 		System.out.println("1. 客户信息管理");
 		System.out.println("2. 购物结算");
@@ -21,18 +27,19 @@ public class MenuView {
 	public void jump() {
 		boolean flag = true;
 		while (flag) {
-			this.Menu();
+			this.menu();
 			switch (scan.next()) {
 			case "1":
 				CustView cust = new CustView();// 客户信息管理
 				cust.jump();
 				break;
 			case "2":
-				Shopping.getShopping().settlement(discount);// 购物结算
+				Shopping shop = new Shopping();
+				shop.settlement(discount);// 购物结算
 				break;
 			case "3":
-				GoodLuckView luckView = new GoodLuckView();// 真情回馈"
-				this.discount = luckView.lotteryView();
+				GoodLuckView luckView = new GoodLuckView();
+				this.discount = luckView.lotteryView();// 真情回馈"
 				break;
 			case "4":
 				flag = false;// 注销,跳转start界面

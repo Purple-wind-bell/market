@@ -6,20 +6,19 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
-import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+import com.jsyunsi.market.Configure.Config;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
-import com.jsyunsi.market.vo.Customer;
 import com.jsyunsi.market.vo.Product;
 
 public class ProductDaoList implements ProductDaoInter {
 	static ArrayList<Product> productlist = new ArrayList<>();
 	/** 文件存储 */
-	static File productFile = new File("F:\\productData.txt");
+	static File productFile = Config.getProductFile();
 	static ObjectInputStream ois = null;
 
-	static {
+	{
 		try {
 			if (!productFile.exists()) {
 				productFile.createNewFile();
@@ -175,7 +174,7 @@ public class ProductDaoList implements ProductDaoInter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static boolean readList() {
+	public boolean readList() {
 		// TODO Auto-generated method stub
 		try {
 			Object list = ois.readObject();

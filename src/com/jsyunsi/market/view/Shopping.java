@@ -22,25 +22,7 @@ public class Shopping {
 	private String name;// 商品名称
 	private boolean flag = true;//
 	private static Shopping shop = new Shopping();
-	DataInter productDaoInter = new ProductDaoList();
-
-	// 获得shop对象
-	public static Shopping getShopping() {
-		return shop;
-	}
-
-	// 显示结算系统界面
-	private void display() {
-		System.out.println("***************结算系统**************");
-		System.out.println();
-		System.out.println("商品编号\t商品名称\t\t商品价格\t\t商品库存");
-		ArrayList<Product> prolist = productDaoInter.getList();
-		for (int i = 0; i < productDaoInter.getAmount(); i++) {
-			System.out.println(prolist.get(i).toString());
-		}
-		System.out.println();
-		System.out.println("***********************************");
-	}
+	DataInter<Product> productDaoInter = new ProductDaoList();
 
 	// 折扣使用
 	private void useDiscount(double dis) {
@@ -83,7 +65,7 @@ public class Shopping {
 
 	// 获得并打印商品信息
 	private void printInformation() {
-		Product pro = productDaoInter.getProductWithIndex(this.index);
+		Product pro = productDaoInter.getWithIndex(this.index);
 		this.name = pro.getName();// 获得商品信息
 		this.price = pro.getPrice();
 		this.stock = pro.getStock();
@@ -174,7 +156,12 @@ public class Shopping {
 		}
 	}
 
-	private void enterProduct() {
+	private void inputProduct() {
+		System.out.println("商品编号\t商品名称\t\t商品价格\t\t商品库存");
+		ArrayList<Product> prolist = productDaoInter.getList();
+		for (int i = 0; i < productDaoInter.getAmount(); i++) {
+			System.out.println(prolist.get(i).toString());
+		}
 		this.flag = true;
 		while (this.flag) {
 			// 结算商品输入
@@ -188,8 +175,6 @@ public class Shopping {
 				this.flag = this.next();
 				continue;
 			}
-
-			// -------
 			index = productDaoInter.getIndex(num);
 			if (productDaoInter.isExists(index)) {// 商品是否存在等信息查询及输出
 				this.printInformation();
@@ -203,9 +188,12 @@ public class Shopping {
 
 	// 结算
 	public void settlement(double discount) {
-		this.display();
+		System.out.println("***************结算系统**************");
+		System.out.println();
+		System.out.println();
+		System.out.println("***********************************");
 		do {
-			this.enterProduct();
+			this.inputProduct();
 			this.stockCheck();
 		} while (this.next());
 		// 折扣

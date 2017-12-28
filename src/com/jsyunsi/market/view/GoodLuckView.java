@@ -2,10 +2,18 @@ package com.jsyunsi.market.view;
 
 import java.util.Scanner;
 import com.jsyunsi.market.service.GoodLuckService;
+import com.jsyunsi.market.serviceInter.GoodLuckServiceInter;
 
+/**
+ * 抽奖界面
+ * 
+ * @author Administrator
+ *
+ */
 public class GoodLuckView {
 	/** 折扣值 */
 	private double discount;
+	private GoodLuckServiceInter luckService = new GoodLuckService();
 
 	/**
 	 * 抽奖界面
@@ -24,7 +32,7 @@ public class GoodLuckView {
 			String input = scan.next();
 			switch (input.toUpperCase()) {
 			case "Y":
-				discount =new GoodLuckService().lottery(true);// 生成幸运值
+				discount = luckService.lottery(true);// 生成幸运值
 				if (discount < 0.7) {
 					System.out.println("谢谢惠顾");
 				} else {

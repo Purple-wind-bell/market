@@ -1,7 +1,5 @@
 package com.jsyunsi.market.main;
 
-import com.jsyunsi.market.view.Start;
-
 public class marketTest {
 	/**
 	 * 启动入口

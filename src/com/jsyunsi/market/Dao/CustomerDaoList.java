@@ -8,6 +8,8 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
+
+import com.jsyunsi.market.Configure.Config;
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.vo.Customer;
 
@@ -15,10 +17,10 @@ public class CustomerDaoList implements CustomerDaoInter {
 	/** customer对象集合 */
 	private static ArrayList<Customer> customerlist = new ArrayList<>();
 	/** 文件存储 */
-	static File customerFile = new File("F:\\customerData.txt");
+	static File customerFile = Config.getCustomerFile();
 	static ObjectInputStream ois = null;
 
-	static {
+	{
 		try {
 			if (!customerFile.exists()) {
 				customerFile.createNewFile();
@@ -143,7 +145,7 @@ public class CustomerDaoList implements CustomerDaoInter {
 	}
 
 	@SuppressWarnings("unchecked")
-	public static boolean readList() {
+	public boolean readList() {
 		// TODO Auto-generated method stub
 		try {
 			Object list = ois.readObject();
