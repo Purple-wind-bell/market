@@ -1,4 +1,4 @@
-package com.jsyunsi.market.vo;
+package com.jsyunsi.market.utils;
 
 public class SettleMessage {
 	/** 总价 */

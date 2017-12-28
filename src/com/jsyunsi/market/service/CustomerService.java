@@ -8,7 +8,7 @@ import com.jsyunsi.market.vo.Customer;
 
 //public class CustomerService extends CustomerIO {
 public class CustomerService implements CustomerServiceInter {
-	private CustomerDaoInter custInter = new CustomerListDao();
+	private CustomerDaoInter<Integer> custInter = new CustomerListDao();
 	Scanner scan = new Scanner(System.in);
 	boolean flag = true;
 
@@ -57,13 +57,13 @@ public class CustomerService implements CustomerServiceInter {
 	public void showAll() {
 		System.out.println("卡号\t姓名\t手机");
 		for (int i = 0; i < custInter.getAmount(); i++) { // 遍历打印所有客户信息
-			System.out.println(custInter.getWithIndex(i).toString());
+			System.out.println(custInter.getWithId(i).toString());
 		}
 	}
 
-	private void showById(int num) {
+	private void showById(int id) {
 		System.out.println("卡号\t姓名\t手机");
-		Customer cust = custInter.getWithIndex(custInter.getIndex(num));
+		Customer cust = custInter.getWithId(id);
 		System.out.println(cust.toString());
 	}
 
@@ -73,7 +73,8 @@ public class CustomerService implements CustomerServiceInter {
 		while (flag) {
 			System.out.println("当前用户数：" + custInter.getAmount());
 			int num = this.inputCardNum();
-			if (custInter.isExists(num)) {// 判断该用户是否已经存在
+			int id = custInter.getId(num);
+			if (!custInter.isExists(id)) {// 判断该用户是否已经存在
 				System.out.println("该卡号不存在用户，可以添加。");// 不存在
 				System.out.println("请输入姓名：");
 				String name = scan.next();
@@ -97,7 +98,8 @@ public class CustomerService implements CustomerServiceInter {
 		flag = true;
 		System.out.println("请输入客户卡号：");// 查询该客户是否存在
 		int num = this.inputCardNum();
-		if (custInter.isExists(num)) {// 若存在,显示信息
+		int id = custInter.getId(num);
+		if (custInter.isExists(id)) {// 判断该用户是否已经存在
 			System.out.println("查询的客户存在！");
 			this.showById(num);
 		} else {
@@ -114,15 +116,16 @@ public class CustomerService implements CustomerServiceInter {
 		while (flag) {
 			System.out.println("请输入客户卡号：");
 			int num = this.inputCardNum();
-			if (custInter.isExists(num)) {// 判断该用户是否已经存在
-				this.showById(num);
+			int id = custInter.getId(num);
+			if (custInter.isExists(id)) {// 判断该用户是否已经存在
+				this.showById(id);
 				System.out.println("该卡号存在用户，可以修改。");// 存在
 				System.out.println("请输入姓名：");
 				String name = scan.next();
 				System.out.println("请输入电话：");
 				String phone = scan.next();
 				Customer cust = new Customer(num, name, phone);
-				if (custInter.update(num, cust)) {
+				if (custInter.update(id, cust)) {
 					System.out.println("修改成功");
 				} else {
 					System.out.println("修改失败");
@@ -140,16 +143,16 @@ public class CustomerService implements CustomerServiceInter {
 		while (flag) {
 			System.out.println("请输入客户卡号：");
 			int num = this.inputCardNum();
-			int index = custInter.getIndex(num);
-			if (custInter.isExists(index)) {// 判断该用户是否已经存在
+			int id = custInter.getId(num);
+			if (custInter.isExists(id)) {// 判断该用户是否已经存在
 				System.out.println("卡号\t姓名\t手机");
-				System.out.println(custInter.getWithIndex(index).toString());
+				System.out.println(custInter.getWithId(id).toString());
 				System.out.println("是否确认删除？(y/n)");// 存在,判断是否删除
 				boolean t = true;
 				while (t) {// 循环判别是否删除数据
 					switch (scan.next().toUpperCase()) {
 					case "Y":
-						if (custInter.delWithIndex(index)) {
+						if (custInter.delWithId(id)) {
 							System.out.println("删除成功");
 						} else {
 							System.out.println("删除失败");

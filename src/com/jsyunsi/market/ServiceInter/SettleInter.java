@@ -1,6 +1,6 @@
 package com.jsyunsi.market.ServiceInter;
 
-import java.util.ArrayList;
+import com.jsyunsi.market.utils.SettleRequest;
 
 /**
  * 结算接口
@@ -25,6 +25,6 @@ public interface SettleInter<T, E> {
 	 *            折扣
 	 * @return T
 	 */
-	T getSettleMessage(ArrayList<E> list, double amountPaid, double discount);
+	T getSettleMessage(SettleRequest<E> settleRequest);
 
 }

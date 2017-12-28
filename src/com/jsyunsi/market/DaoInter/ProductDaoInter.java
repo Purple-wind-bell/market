@@ -8,8 +8,8 @@ import com.jsyunsi.market.vo.Product;
  * @author 紫风铃
  * @since 1.1
  */
-public interface ProductDaoInter extends DataInter<Product>{
-	
+public interface ProductDaoInter<E> extends DataInter<Product, E> {
+
 	/**
 	 * 更新库存
 	 * 
@@ -19,7 +19,7 @@ public interface ProductDaoInter extends DataInter<Product>{
 	 *            商品新的库存
 	 * @return true:更新成功
 	 */
-	public abstract boolean updateStock(int index, int stock);
+	boolean updateStock(E id, int stock);
 
 	/**
 	 * 更新商品价格
@@ -30,6 +30,6 @@ public interface ProductDaoInter extends DataInter<Product>{
 	 *            商品价格
 	 * @return true:更新成功
 	 */
-	public abstract boolean updatePrice(int index, int price);
+	boolean updatePrice(E id, int price);
 
 }

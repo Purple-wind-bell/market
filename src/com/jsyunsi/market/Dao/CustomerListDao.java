@@ -12,7 +12,7 @@ import com.jsyunsi.market.Configure.Constant;
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.vo.Customer;
 
-public class CustomerListDao implements CustomerDaoInter {
+public class CustomerListDao implements CustomerDaoInter<Integer> {
 	/** customer对象集合 */
 	private static ArrayList<Customer> customerlist = new ArrayList<>();
 	/** 文件存储 */
@@ -45,7 +45,7 @@ public class CustomerListDao implements CustomerDaoInter {
 	}
 
 	@Override
-	public int getIndex(int cardNum) {
+	public Integer getId(int cardNum) {
 		// TODO Auto-generated method stub
 		Iterator<Customer> iterator = customerlist.iterator();
 		while (iterator.hasNext()) {
@@ -58,7 +58,7 @@ public class CustomerListDao implements CustomerDaoInter {
 	}
 
 	@Override
-	public int getIndex(String name) {
+	public Integer getId(String name) {
 		// TODO Auto-generated method stub
 		Iterator<Customer> iterator = customerlist.iterator();
 		while (iterator.hasNext()) {
@@ -71,10 +71,10 @@ public class CustomerListDao implements CustomerDaoInter {
 	}
 
 	@Override
-	public Customer getWithIndex(int index) {
+	public Customer getWithId(Integer id) {
 		// TODO Auto-generated method stub
 		try {
-			return customerlist.get(index);
+			return customerlist.get(id);
 		} catch (IndexOutOfBoundsException e) {
 			// TODO: handle exception
 			return null;
@@ -82,9 +82,9 @@ public class CustomerListDao implements CustomerDaoInter {
 	}
 
 	@Override
-	public boolean isExists(int index) {
+	public boolean isExists(Integer id) {
 		// TODO Auto-generated method stub
-		if (index >= 0 && index < customerlist.size()) {
+		if (id >= 0 && id < customerlist.size()) {
 			return true;
 		}
 		return false;
@@ -93,7 +93,7 @@ public class CustomerListDao implements CustomerDaoInter {
 	@Override
 	public boolean add(Customer customer) {
 		// TODO Auto-generated method stub
-		int index = getIndex(customer.getCardNum());
+		int index = getId(customer.getCardNum());
 		if (!this.isExists(index) && (customerlist.add(customer))) {
 			writeList();
 			return true;
@@ -103,9 +103,9 @@ public class CustomerListDao implements CustomerDaoInter {
 	}
 
 	@Override
-	public boolean update(int cardNum, Customer customer) {
+	public boolean update(Integer id, Customer customer) {
 		// TODO Auto-generated method stub
-		int index = this.getIndex(cardNum);
+		int index = this.getId(id.intValue());
 		if (this.isExists(index)) {
 			try {
 				customerlist.set(index, customer);
@@ -118,8 +118,9 @@ public class CustomerListDao implements CustomerDaoInter {
 		return false;
 	}
 
-	public boolean delWithIndex(int index) {
+	public boolean delWithId(Integer id) {
 		// TODO Auto-generated method stub
+		int index = id;
 		if (this.isExists(index)) {
 			customerlist.remove(index);
 			writeList();
@@ -158,7 +159,6 @@ public class CustomerListDao implements CustomerDaoInter {
 			// TODO Auto-generated catch block
 			return false;
 		}
-
 	}
 
 }

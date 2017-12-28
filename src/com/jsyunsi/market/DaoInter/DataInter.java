@@ -2,7 +2,7 @@ package com.jsyunsi.market.DaoInter;
 
 import java.util.ArrayList;
 
-public interface DataInter<T> {
+public interface DataInter<T, E> {
 
 	/**
 	 * 获取获得所有T对象的集合
@@ -19,31 +19,31 @@ public interface DataInter<T> {
 	int getAmount();
 
 	/**
-	 * 获取索引
+	 * 获取ID
 	 * 
 	 * @param num
 	 *            编号
-	 * @return 索引
+	 * @return ID
 	 */
-	int getIndex(int num);
+	E getId(int num);
 
 	/**
-	 * 获取索引
+	 * 获取ID
 	 * 
 	 * @param name
 	 *            名称
-	 * @return 索引
+	 * @return ID
 	 */
-	int getIndex(String name);
+	E getId(String name);
 
 	/**
 	 * 判断是否存在
 	 * 
-	 * @param index
-	 *            索引
+	 * @param id
+	 *            ID
 	 * @return true:存在
 	 */
-	boolean isExists(int index);
+	boolean isExists(E id);
 
 	/**
 	 * 添加数据
@@ -55,22 +55,22 @@ public interface DataInter<T> {
 	boolean add(T t);
 
 	/**
-	 * 根据索引删除数据
+	 * 根据ID删除数据
 	 * 
-	 * @param index
-	 *            索引
+	 * @param id
+	 *            ID
 	 * @return true:删除成功
 	 */
-	boolean delWithIndex(int index);
+	boolean delWithId(E id);
 
 	/**
-	 * 根据索引获取信息
+	 * 根据ID获取信息
 	 * 
-	 * @param index
-	 *            索引
+	 * @param id
+	 *            ID
 	 * @return T对象
 	 */
-	T getWithIndex(int index);
+	T getWithId(E id);
 
 	/**
 	 * 修改数据信息
@@ -79,10 +79,6 @@ public interface DataInter<T> {
 	 *            新的数据对象
 	 * @return true:修改成功
 	 */
-	boolean update(int num, T t);
-
-	boolean writeList();
-
-	boolean readList();
+	boolean update(E id, T t);
 
 }

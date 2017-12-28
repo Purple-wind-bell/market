@@ -4,17 +4,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
 import com.jsyunsi.market.Dao.ProductListDao;
-import com.jsyunsi.market.DaoInter.DataInter;
+import com.jsyunsi.market.DaoInter.ProductDaoInter;
 import com.jsyunsi.market.ServiceInter.SettleInter;
 import com.jsyunsi.market.service.SettleService;
+import com.jsyunsi.market.utils.SettleMessage;
+import com.jsyunsi.market.utils.SettleRequest;
 import com.jsyunsi.market.vo.Product;
-import com.jsyunsi.market.vo.SettleMessage;
 
 public class Shopping {
 	private Scanner scan = new Scanner(System.in);
 	private boolean flag = true;
 	ArrayList<Product> list = new ArrayList<>();
-	DataInter<Product> productDaoInter = new ProductListDao();
+	ProductDaoInter<Integer> productDaoInter = new ProductListDao();
 	SettleInter<SettleMessage, Product> settle = new SettleService();
 	SettleMessage message = null;
 
@@ -103,7 +104,11 @@ public class Shopping {
 			System.out.println("请输入实缴金额：");
 			try {
 				amountPaid = scan.nextDouble();
-				message = settle.getSettleMessage(list, amountPaid, dis);
+				SettleRequest<Product> settleRequest = new SettleRequest<>();
+				settleRequest.setList(list);
+				settleRequest.setDiscount(dis);
+				settleRequest.setAmountPaid(amountPaid);
+				message = settle.getSettleMessage(settleRequest);
 				if (message.getChange() < 0) {// 判断实缴金额是否足够支付
 					System.out.println("实缴金额不足，重新输入！");
 					System.out.println("应付金额：" + message.getAmountPayable());
@@ -148,9 +153,9 @@ public class Shopping {
 			System.out.println("请输入商品编号：");// 结算商品输入
 			try {
 				int num = scan.nextInt();// 商品编号
-				int index = productDaoInter.getIndex(num);
-				if (productDaoInter.isExists(index)) {// 商品是否存在等信息查询及输出
-					Product p = productDaoInter.getWithIndex(index);
+				int id = productDaoInter.getId(num);
+				if (productDaoInter.isExists(id)) {// 商品是否存在等信息查询及输出
+					Product p = productDaoInter.getWithId(id);
 					System.out.println("商品信息：\t" + "编号\t" + "名称\t" + "价格\t");
 					System.out.println(p.toString());// 打印商品信息
 					list.add(p);// 将结算商品添加到结算目录

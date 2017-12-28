@@ -16,6 +16,11 @@ public class DBUtil {
 	private DBUtil() {
 	}
 
+	/**
+	 * 获得数据库连接
+	 * 
+	 * @return 数据库连接
+	 */
 	public static Connection getconnection() {
 		Connection connection = null;
 		try {
@@ -28,6 +33,12 @@ public class DBUtil {
 		return connection;
 	}
 
+	/**
+	 * 释放数据库连接
+	 * 
+	 * @param connection
+	 *            数据库连接
+	 */
 	public static void releaseConnection(Connection connection) {
 		try {
 			connection.close();
