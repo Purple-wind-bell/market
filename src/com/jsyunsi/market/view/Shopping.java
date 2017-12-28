@@ -3,7 +3,7 @@ package com.jsyunsi.market.view;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Scanner;
-import com.jsyunsi.market.Dao.ProductDaoList;
+import com.jsyunsi.market.Dao.ProductListDao;
 import com.jsyunsi.market.DaoInter.DataInter;
 import com.jsyunsi.market.ServiceInter.SettleInter;
 import com.jsyunsi.market.service.SettleService;
@@ -14,7 +14,7 @@ public class Shopping {
 	private Scanner scan = new Scanner(System.in);
 	private boolean flag = true;
 	ArrayList<Product> list = new ArrayList<>();
-	DataInter<Product> productDaoInter = new ProductDaoList();
+	DataInter<Product> productDaoInter = new ProductListDao();
 	SettleInter<SettleMessage, Product> settle = new SettleService();
 	SettleMessage message = null;
 

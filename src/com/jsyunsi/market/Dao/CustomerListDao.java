@@ -12,7 +12,7 @@ import com.jsyunsi.market.Configure.Constant;
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.vo.Customer;
 
-public class CustomerDaoList implements CustomerDaoInter {
+public class CustomerListDao implements CustomerDaoInter {
 	/** customer对象集合 */
 	private static ArrayList<Customer> customerlist = new ArrayList<>();
 	/** 文件存储 */

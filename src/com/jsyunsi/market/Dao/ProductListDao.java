@@ -12,7 +12,7 @@ import com.jsyunsi.market.Configure.Constant;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
 import com.jsyunsi.market.vo.Product;
 
-public class ProductDaoList implements ProductDaoInter {
+public class ProductListDao implements ProductDaoInter {
 	static ArrayList<Product> productlist = new ArrayList<>();
 	/** 文件存储 */
 	static File productFile = new File(Constant.getProdUrl());

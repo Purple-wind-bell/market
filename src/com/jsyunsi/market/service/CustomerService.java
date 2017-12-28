@@ -1,14 +1,14 @@
 package com.jsyunsi.market.service;
 
 import java.util.Scanner;
-import com.jsyunsi.market.Dao.CustomerDaoList;
+import com.jsyunsi.market.Dao.CustomerListDao;
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.ServiceInter.CustomerServiceInter;
 import com.jsyunsi.market.vo.Customer;
 
 //public class CustomerService extends CustomerIO {
 public class CustomerService implements CustomerServiceInter {
-	private CustomerDaoInter custInter = new CustomerDaoList();
+	private CustomerDaoInter custInter = new CustomerListDao();
 	Scanner scan = new Scanner(System.in);
 	boolean flag = true;
 
