@@ -1,4 +1,4 @@
-package com.jsyunsi.market.serviceInter;
+package com.jsyunsi.market.ServiceInter;
 
 public interface GoodLuckServiceInter {
 	double lottery(boolean askForLottery);

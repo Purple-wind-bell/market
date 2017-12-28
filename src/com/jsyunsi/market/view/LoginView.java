@@ -1,8 +1,9 @@
 package com.jsyunsi.market.view;
 
 import java.util.Scanner;
+
+import com.jsyunsi.market.ServiceInter.CheckServiceInter;
 import com.jsyunsi.market.service.LoginCheckService;
-import com.jsyunsi.market.serviceInter.CheckServiceInter;
 
 /**
  * 登录界面

@@ -1,8 +1,9 @@
 package com.jsyunsi.market.view;
 
 import java.util.Scanner;
+
+import com.jsyunsi.market.ServiceInter.GoodLuckServiceInter;
 import com.jsyunsi.market.service.GoodLuckService;
-import com.jsyunsi.market.serviceInter.GoodLuckServiceInter;
 
 /**
  * 抽奖界面

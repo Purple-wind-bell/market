@@ -1,4 +1,4 @@
-package com.jsyunsi.market.serviceInter;
+package com.jsyunsi.market.ServiceInter;
 
 import java.util.ArrayList;
 

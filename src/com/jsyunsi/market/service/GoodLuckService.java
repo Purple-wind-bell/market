@@ -1,6 +1,6 @@
 package com.jsyunsi.market.service;
 
-import com.jsyunsi.market.serviceInter.GoodLuckServiceInter;
+import com.jsyunsi.market.ServiceInter.GoodLuckServiceInter;
 
 /**
  * 抽奖服务类

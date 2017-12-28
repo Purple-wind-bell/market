@@ -1,6 +1,6 @@
 package com.jsyunsi.market.service;
 
-import com.jsyunsi.market.serviceInter.CheckServiceInter;
+import com.jsyunsi.market.ServiceInter.CheckServiceInter;
 import com.jsyunsi.market.vo.Admin;
 
 /**

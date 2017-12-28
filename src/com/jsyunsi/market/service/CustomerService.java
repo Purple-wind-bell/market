@@ -3,7 +3,7 @@ package com.jsyunsi.market.service;
 import java.util.Scanner;
 import com.jsyunsi.market.Dao.CustomerDaoList;
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
-import com.jsyunsi.market.serviceInter.CustomerServiceInter;
+import com.jsyunsi.market.ServiceInter.CustomerServiceInter;
 import com.jsyunsi.market.vo.Customer;
 
 //public class CustomerService extends CustomerIO {

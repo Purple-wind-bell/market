@@ -2,8 +2,8 @@ package com.jsyunsi.market.view;
 
 import java.util.Scanner;
 
+import com.jsyunsi.market.ServiceInter.CustomerServiceInter;
 import com.jsyunsi.market.service.CustomerService;
-import com.jsyunsi.market.serviceInter.CustomerServiceInter;
 
 public class CustView {
 	private Scanner scan = new Scanner(System.in);
