@@ -1,23 +1,48 @@
 package com.jsyunsi.market.Dao;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.OutputStream;
 import java.util.ArrayList;
 import java.util.Iterator;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
+import com.jsyunsi.market.vo.Customer;
 import com.jsyunsi.market.vo.Product;
 
 public class ProductDaoList implements ProductDaoInter {
-	ArrayList<Product> productlist = new ArrayList<Product>();
+	static ArrayList<Product> productlist = new ArrayList<Product>();
 	private int amount = 0;// 用户数量
 	private int index = -1;// 指定用户的索引
+	/** 文件存储 */
+	static File productFile = new File("F:\\productData.txt");
+	static ObjectInputStream ois = null;
+
+	static {
+		try {
+			if (!productFile.exists()) {
+				productFile.createNewFile();
+				ois = new ObjectInputStream(new FileInputStream(productFile));
+				readList();
+			}
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	{
 		this.add(new Product(1, "羽毛球拍", 250, 100));
 		this.add(new Product(2, "羽毛球", 130, 100));
 		this.add(new Product(3, "羽毛球鞋", 600, 100));
+		writeList();
 	}
 
 	public ArrayList<Product> getList() {
-		return this.productlist;
+		return productlist;
 	}
 
 	@Override
@@ -81,7 +106,7 @@ public class ProductDaoList implements ProductDaoInter {
 		if (productlist.contains(product)) {
 			return false;
 		} else {
-			return this.productlist.add(product);
+			return productlist.add(product);
 		}
 	}
 
@@ -92,7 +117,7 @@ public class ProductDaoList implements ProductDaoInter {
 		int index = this.getIndex(num);
 		if (this.isExists(index)) {
 			try {
-				this.productlist.set(index, product);
+				productlist.set(index, product);
 				return true;
 			} catch (IndexOutOfBoundsException e) {
 				// TODO: handle exception
@@ -120,7 +145,7 @@ public class ProductDaoList implements ProductDaoInter {
 	public boolean updateStock(int index, int stock) {
 		// TODO Auto-generated method stub
 		if (isExists(index)) {
-			Product data = this.productlist.get(index);
+			Product data = productlist.get(index);
 			data.setStock(stock);
 			return true;
 		} else {
@@ -132,11 +157,44 @@ public class ProductDaoList implements ProductDaoInter {
 	public boolean updatePrice(int index, int price) {
 		// TODO Auto-generated method stub
 		if (isExists(index)) {
-			Product data = this.productlist.get(index);
+			Product data = productlist.get(index);
 			data.setPrice(price);
 			return true;
 		} else {
 			return false;
 		}
+	}
+
+	@SuppressWarnings("resource")
+	public boolean writeList() {
+		// TODO Auto-generated method stub
+		try {
+			FileOutputStream fos = new FileOutputStream(productFile);
+			ObjectOutputStream oos = new ObjectOutputStream(fos);
+			oos.writeObject(productlist);
+			oos.flush();
+			return true;
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
+	}
+
+	@SuppressWarnings("unchecked")
+	public static boolean readList() {
+		// TODO Auto-generated method stub
+		try {
+			Object list = ois.readObject();
+			if (list != null && list.getClass() == productlist.getClass()) {
+				productlist = (ArrayList<Product>) list;
+			} else {
+				productlist = null;
+			}
+			return true;
+		} catch (ClassNotFoundException | IOException e) {
+			// TODO Auto-generated catch block
+			return false;
+		}
+
 	}
 }

@@ -3,7 +3,7 @@ package com.jsyunsi.market.view;
 import java.util.ArrayList;
 import java.util.Scanner;
 import com.jsyunsi.market.Dao.ProductDaoList;
-import com.jsyunsi.market.DaoInter.ProductDaoInter;
+import com.jsyunsi.market.DaoInter.DataInter;
 import com.jsyunsi.market.vo.Product;
 
 public class Shopping {
@@ -22,7 +22,7 @@ public class Shopping {
 	private String name;// 商品名称
 	private boolean flag = true;//
 	private static Shopping shop = new Shopping();
-	ProductDaoInter productDaoInter = new ProductDaoList();
+	DataInter productDaoInter = new ProductDaoList();
 
 	// 获得shop对象
 	public static Shopping getShopping() {

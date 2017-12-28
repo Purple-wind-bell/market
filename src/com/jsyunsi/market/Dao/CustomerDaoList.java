@@ -11,7 +11,6 @@ import java.util.Iterator;
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.vo.Customer;
 
-@SuppressWarnings("unchecked")
 public class CustomerDaoList implements CustomerDaoInter {
 	/** customer对象集合 */
 	private static ArrayList<Customer> customerlist = new ArrayList<>();
@@ -25,11 +24,10 @@ public class CustomerDaoList implements CustomerDaoInter {
 		try {
 			if (!customerFile.exists()) {
 				customerFile.createNewFile();
+				ois = new ObjectInputStream(new FileInputStream(customerFile));
+				readList();
 			}
-			ois = new ObjectInputStream(new FileInputStream(customerFile));
-			// readList();
-			customerlist = (ArrayList<Customer>) ois.readObject();
-		} catch (IOException | ClassNotFoundException e) {
+		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -142,15 +140,22 @@ public class CustomerDaoList implements CustomerDaoInter {
 		}
 	}
 
+	@SuppressWarnings("unchecked")
 	public static boolean readList() {
 		// TODO Auto-generated method stub
 		try {
-			customerlist = (ArrayList<Customer>) ois.readObject();
+			Object list = ois.readObject();
+			if (list != null && list.getClass() == customerlist.getClass()) {
+				customerlist = (ArrayList<Customer>) list;
+			} else {
+				customerlist = null;
+			}
 			return true;
 		} catch (ClassNotFoundException | IOException e) {
 			// TODO Auto-generated catch block
 			return false;
 		}
+
 	}
 
 }
