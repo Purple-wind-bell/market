@@ -27,13 +27,25 @@ public class LoginView {
 		System.out.println("请输入密码:");
 		String passwd = scan.next();
 		int status = check.check(user, passwd);// 获得用户检查结果状态码
-		if (status == 3) {
-			MenuView menu = new MenuView();// 登录MenuView
-			menu.jump();
-		} else {
-			System.out.println("用户名或密码错误！");
+		switch (Integer.toString(status)) {
+		case "1":
+			System.out.println("用户名不存在！");
 			wrongNum++;
 			this.wrongCheck();
+			break;
+		case "2":
+			System.out.println("密码错误");
+			wrongNum++;
+			break;
+		case "3":
+			MenuView menu = new MenuView();// 登录MenuView
+			menu.jump();
+			break;
+		case "0":
+			System.out.println("方法没有正确执行");
+			break;
+		default:
+			break;
 		}
 	}
 
@@ -41,7 +53,7 @@ public class LoginView {
 	 * 错误次数检测
 	 */
 	private void wrongCheck() {
-		if (wrongNum != 3) { // 第三次输入错误不显示剩余次数
+		if (wrongNum < 3) { // 第三次输入错误不显示剩余次数
 			System.out.println("剩余次数：" + (3 - wrongNum));
 		} else {
 			wrongNum = 0;
@@ -61,12 +73,12 @@ public class LoginView {
 	 */
 	public void jump() {
 		t = true;
-		System.out.println("**************天猫超市->登录系统***************");// 登录界面显示
-		System.out.println("1. 登录");
-		System.out.println("2. 退出");
-		System.out.println("*******************************************");
-		System.out.println("请选择，输入数字：");
 		while (t) {
+			System.out.println("**************天猫超市->登录系统***************");// 登录界面显示
+			System.out.println("1. 登录");
+			System.out.println("2. 退出");
+			System.out.println("*******************************************");
+			System.out.println("请选择，输入数字：");
 			switch (scan.next()) {
 			case "1":
 				this.login();
@@ -76,12 +88,12 @@ public class LoginView {
 				if (scan.next().equalsIgnoreCase("y")) {
 					t = false;// 退出系统
 				}
+				System.out.println("退出成功!");
 				break;
 			default:
 				System.out.println("输入错误！");
 				break;
 			}
 		}
-		System.out.println("退出成功!");
 	}
 }

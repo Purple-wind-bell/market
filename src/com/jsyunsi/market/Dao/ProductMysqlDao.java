@@ -51,9 +51,9 @@ public class ProductMysqlDao implements ProductDaoInter {
 		try {
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
 					ResultSet.CONCUR_UPDATABLE);
-			ResultSet rSet = statement.executeQuery(sql);
-			rSet.last();
-			amount = rSet.getRow();
+			ResultSet resultSet = statement.executeQuery(sql);
+			resultSet.last();
+			amount = resultSet.getRow();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,20 +89,20 @@ public class ProductMysqlDao implements ProductDaoInter {
 	@Override
 	public int getId(int num) {
 		// TODO Auto-generated method stub
-		int rows = -1;
+		ResultSet resultSet = null;
 		String sql = "SELECT * FROM product num = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, num);
-			rows = ps.executeUpdate();
+			resultSet = ps.executeQuery();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtil.releaseConnection(connection);
 		}
-		return rows > 0 ? num : -1;
+		return resultSet != null ? num : -1;
 	}
 
 	@Override
@@ -119,6 +119,7 @@ public class ProductMysqlDao implements ProductDaoInter {
 			Class<Product> c = Product.class;// 通过反射获取id所属列的字段名
 			Field[] field = c.getFields();
 			String numColumn = field[0].getName();
+			resultSet.next();
 			id = resultSet.getInt(numColumn);// 查询id
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -185,6 +186,7 @@ public class ProductMysqlDao implements ProductDaoInter {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
 			resultSet = ps.executeQuery();// 获取结果集
+			resultSet.next();
 			int num = resultSet.getInt(1);
 			String name = resultSet.getString(2);
 			double price = resultSet.getDouble(3);

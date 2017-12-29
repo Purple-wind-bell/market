@@ -7,8 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-import java.util.Iterator;
-
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.utils.DBUtil;
 import com.jsyunsi.market.vo.Customer;
@@ -50,11 +48,10 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		String sql = "SELECT * FROM customer";
 		connection = DBUtil.getconnection();
 		try {
-			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
-					ResultSet.CONCUR_UPDATABLE);
-			ResultSet rSet = statement.executeQuery(sql);
-			rSet.last();
-			amount = rSet.getRow();
+			Statement statement = connection.createStatement();
+			ResultSet resultSet = statement.executeQuery(sql);
+			resultSet.last();
+			amount = resultSet.getRow();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -89,37 +86,38 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 	@Override
 	public int getId(int num) {
 		// TODO Auto-generated method stub
-		int rows = -1;
+		ResultSet resultSet = null;
 		String sql = "SELECT * FROM customer num = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, num);
-			rows = ps.executeUpdate();
+			resultSet = ps.executeQuery();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtil.releaseConnection(connection);
 		}
-		return rows > 0 ? num : -1;
+		return resultSet != null ? num : -1;
 	}
 
 	@Override
 	public int getId(String name) {
 		// TODO Auto-generated method stub
 		int id = -1;
-		ResultSet rSet = null;
+		ResultSet resultSet = null;
 		String sql = "SELECT num FROM customer name = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, name);
-			rSet = ps.executeQuery();// 获取结果集
+			resultSet = ps.executeQuery();// 获取结果集
 			Class<Customer> class1 = Customer.class;// 通过反射获取id所属列的字段名
 			Field[] field = class1.getFields();
 			String cardNumColumn = field[0].getName();
-			id = rSet.getInt(cardNumColumn);// 查询id
+			resultSet.next();
+			id = resultSet.getInt(cardNumColumn);// 查询id
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -177,17 +175,20 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 	public Customer getWithId(int id) {
 		// TODO Auto-generated method stub
 		Customer customer = null;
-		ResultSet rSet = null;
+		ResultSet resultSet = null;
 		String sql = "SELECT cardNum FROM customer cardNum = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
-			rSet = ps.executeQuery();// 获取结果集
-			int cardNum = rSet.getInt(1);
-			String name = rSet.getString(2);
-			String phone = rSet.getString(3);
-			customer = new Customer(cardNum, name, phone);
+			resultSet = ps.executeQuery();// 获取结果集
+			if (resultSet != null) {
+				resultSet.next();
+				int cardNum = resultSet.getInt(1);
+				String name = resultSet.getString(2);
+				String phone = resultSet.getString(3);
+				customer = new Customer(cardNum, name, phone);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
