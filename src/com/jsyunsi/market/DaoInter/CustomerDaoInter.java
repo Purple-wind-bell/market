@@ -8,6 +8,6 @@ import com.jsyunsi.market.vo.Customer;
  * @author 紫风铃
  * @since 1.1
  */
-public interface CustomerDaoInter<E> extends DataInter<Customer,E> {
+public interface CustomerDaoInter extends DataInter<Customer> {
 
 }

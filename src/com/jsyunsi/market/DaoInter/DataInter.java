@@ -2,7 +2,7 @@ package com.jsyunsi.market.DaoInter;
 
 import java.util.ArrayList;
 
-public interface DataInter<T, E> {
+public interface DataInter<T> {
 
 	/**
 	 * 获取获得所有T对象的集合
@@ -25,7 +25,7 @@ public interface DataInter<T, E> {
 	 *            编号
 	 * @return ID
 	 */
-	E getId(int num);
+	int getId(int num);
 
 	/**
 	 * 获取ID
@@ -34,7 +34,7 @@ public interface DataInter<T, E> {
 	 *            名称
 	 * @return ID
 	 */
-	E getId(String name);
+	int getId(String name);
 
 	/**
 	 * 判断是否存在
@@ -43,7 +43,7 @@ public interface DataInter<T, E> {
 	 *            ID
 	 * @return true:存在
 	 */
-	boolean isExists(E id);
+	boolean isExists(int id);
 
 	/**
 	 * 添加数据
@@ -61,7 +61,7 @@ public interface DataInter<T, E> {
 	 *            ID
 	 * @return true:删除成功
 	 */
-	boolean delWithId(E id);
+	boolean delWithId(int id);
 
 	/**
 	 * 根据ID获取信息
@@ -70,7 +70,7 @@ public interface DataInter<T, E> {
 	 *            ID
 	 * @return T对象
 	 */
-	T getWithId(E id);
+	T getWithId(int id);
 
 	/**
 	 * 修改数据信息
@@ -79,6 +79,6 @@ public interface DataInter<T, E> {
 	 *            新的数据对象
 	 * @return true:修改成功
 	 */
-	boolean update(E id, T t);
+	boolean update(int id, T t);
 
 }

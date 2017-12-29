@@ -5,7 +5,7 @@ import java.util.ArrayList;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
 import com.jsyunsi.market.vo.Product;
 
-public class ProductMysqlDao implements ProductDaoInter<Integer> {
+public class ProductMysqlDao implements ProductDaoInter {
 
 	@Override
 	public ArrayList<Product> getList() {
@@ -20,19 +20,19 @@ public class ProductMysqlDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public Integer getId(int num) {
+	public int getId(int num) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override
-	public Integer getId(String name) {
+	public int getId(String name) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override
-	public boolean isExists(Integer id) {
+	public boolean isExists(int id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -44,31 +44,31 @@ public class ProductMysqlDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean delWithId(Integer id) {
+	public boolean delWithId(int id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Product getWithId(Integer id) {
+	public Product getWithId(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
 
 	@Override
-	public boolean update(Integer id, Product t) {
+	public boolean update(int id, Product t) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean updateStock(Integer id, int stock) {
+	public boolean updateStock(int id, int stock) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public boolean updatePrice(Integer id, int price) {
+	public boolean updatePrice(int id, int price) {
 		// TODO Auto-generated method stub
 		return false;
 	}

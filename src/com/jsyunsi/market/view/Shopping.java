@@ -15,7 +15,7 @@ public class Shopping {
 	private Scanner scan = new Scanner(System.in);
 	private boolean flag = true;
 	ArrayList<Product> list = new ArrayList<>();
-	ProductDaoInter<Integer> productDaoInter = new ProductListDao();
+	ProductDaoInter productDaoInter = new ProductListDao();
 	SettleInter<SettleMessage, Product> settle = new SettleService();
 	SettleMessage message = null;
 

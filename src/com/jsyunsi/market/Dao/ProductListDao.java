@@ -12,7 +12,7 @@ import com.jsyunsi.market.Configure.Constant;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
 import com.jsyunsi.market.vo.Product;
 
-public class ProductListDao implements ProductDaoInter<Integer> {
+public class ProductListDao implements ProductDaoInter {
 	static ArrayList<Product> productlist = new ArrayList<>();
 	/** 文件存储 */
 	static File productFile = new File(Constant.getProdUrl());
@@ -40,7 +40,7 @@ public class ProductListDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public Product getWithId(Integer id) {
+	public Product getWithId(int id) {
 		// TODO Auto-generated method stub
 		if (this.isExists(id)) {
 			return productlist.get(id);
@@ -56,7 +56,7 @@ public class ProductListDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public Integer getId(int num) {
+	public int getId(int num) {
 		// TODO Auto-generated method stub
 		Iterator<Product> iterator = productlist.iterator();
 		while (iterator.hasNext()) {
@@ -69,7 +69,7 @@ public class ProductListDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public Integer getId(String name) {
+	public int getId(String name) {
 		// TODO Auto-generated method stub
 		Iterator<Product> iterator = productlist.iterator();
 		while (iterator.hasNext()) {
@@ -82,7 +82,7 @@ public class ProductListDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean isExists(Integer id) {
+	public boolean isExists(int id) {
 		// TODO Auto-generated method stub
 		if (id >= 0 && id < productlist.size()) {
 			return true;
@@ -102,9 +102,9 @@ public class ProductListDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean update(Integer id, Product product) {
+	public boolean update(int id, Product product) {
 		// TODO Auto-generated method stub
-		int index = this.getId(id.intValue());
+		int index = this.getId(id);
 		if (this.isExists(index)) {
 			try {
 				productlist.set(index, product);
@@ -117,11 +117,11 @@ public class ProductListDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean delWithId(Integer id) {
+	public boolean delWithId(int id) {
 		// TODO Auto-generated method stub
 		if (this.isExists(id)) {
 			try {
-				productlist.remove(id.intValue());
+				productlist.remove(id);
 				return true;
 			} catch (IndexOutOfBoundsException e) {
 				// TODO: handle exception
@@ -131,10 +131,10 @@ public class ProductListDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean updateStock(Integer id, int stock) {
+	public boolean updateStock(int id, int stock) {
 		// TODO Auto-generated method stub
 		if (isExists(id)) {
-			Product data = productlist.get(id.intValue());
+			Product data = productlist.get(id);
 			data.setStock(stock);
 			return true;
 		} else {
@@ -143,10 +143,10 @@ public class ProductListDao implements ProductDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean updatePrice(Integer id, int price) {
+	public boolean updatePrice(int id, int price) {
 		// TODO Auto-generated method stub
 		if (isExists(id)) {
-			Product data = productlist.get(id.intValue());
+			Product data = productlist.get(id);
 			data.setPrice(price);
 			return true;
 		} else {

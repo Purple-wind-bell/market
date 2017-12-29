@@ -12,7 +12,7 @@ import com.jsyunsi.market.Configure.Constant;
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.vo.Customer;
 
-public class CustomerListDao implements CustomerDaoInter<Integer> {
+public class CustomerListDao implements CustomerDaoInter {
 	/** customer对象集合 */
 	private static ArrayList<Customer> customerlist = new ArrayList<>();
 	/** 文件存储 */
@@ -45,7 +45,7 @@ public class CustomerListDao implements CustomerDaoInter<Integer> {
 	}
 
 	@Override
-	public Integer getId(int cardNum) {
+	public int getId(int cardNum) {
 		// TODO Auto-generated method stub
 		Iterator<Customer> iterator = customerlist.iterator();
 		while (iterator.hasNext()) {
@@ -58,7 +58,7 @@ public class CustomerListDao implements CustomerDaoInter<Integer> {
 	}
 
 	@Override
-	public Integer getId(String name) {
+	public int getId(String name) {
 		// TODO Auto-generated method stub
 		Iterator<Customer> iterator = customerlist.iterator();
 		while (iterator.hasNext()) {
@@ -71,7 +71,7 @@ public class CustomerListDao implements CustomerDaoInter<Integer> {
 	}
 
 	@Override
-	public Customer getWithId(Integer id) {
+	public Customer getWithId(int id) {
 		// TODO Auto-generated method stub
 		try {
 			return customerlist.get(id);
@@ -82,7 +82,7 @@ public class CustomerListDao implements CustomerDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean isExists(Integer id) {
+	public boolean isExists(int id) {
 		// TODO Auto-generated method stub
 		if (id >= 0 && id < customerlist.size()) {
 			return true;
@@ -103,9 +103,9 @@ public class CustomerListDao implements CustomerDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean update(Integer id, Customer customer) {
+	public boolean update(int id, Customer customer) {
 		// TODO Auto-generated method stub
-		int index = this.getId(id.intValue());
+		int index = this.getId(id);
 		if (this.isExists(index)) {
 			try {
 				customerlist.set(index, customer);
@@ -118,7 +118,7 @@ public class CustomerListDao implements CustomerDaoInter<Integer> {
 		return false;
 	}
 
-	public boolean delWithId(Integer id) {
+	public boolean delWithId(int id) {
 		// TODO Auto-generated method stub
 		int index = id;
 		if (this.isExists(index)) {

@@ -8,7 +8,7 @@ import com.jsyunsi.market.vo.Customer;
 
 //public class CustomerService extends CustomerIO {
 public class CustomerService implements CustomerServiceInter {
-	private CustomerDaoInter<Integer> custInter = new CustomerListDao();
+	private CustomerDaoInter custInter = new CustomerListDao();
 	Scanner scan = new Scanner(System.in);
 	boolean flag = true;
 

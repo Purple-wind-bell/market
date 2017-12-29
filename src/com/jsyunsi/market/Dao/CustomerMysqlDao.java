@@ -10,7 +10,7 @@ import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.utils.DBUtil;
 import com.jsyunsi.market.vo.Customer;
 
-public class CustomerMysqlDao implements CustomerDaoInter<Integer> {
+public class CustomerMysqlDao implements CustomerDaoInter {
 	ArrayList<Customer> list = new ArrayList<>();
 	Connection connection;
 
@@ -40,7 +40,7 @@ public class CustomerMysqlDao implements CustomerDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean update(Integer id, Customer t) {
+	public boolean update(int id, Customer t) {
 		// TODO Auto-generated method stub
 		int rows = 0;
 		connection = DBUtil.getconnection();
@@ -50,7 +50,7 @@ public class CustomerMysqlDao implements CustomerDaoInter<Integer> {
 			ps.setInt(1, t.getCardNum());
 			ps.setString(2, t.getName());
 			ps.setString(3, t.getPhone());
-			ps.setInt(4, id.intValue());
+			ps.setInt(4, id);
 			rows = ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -62,19 +62,19 @@ public class CustomerMysqlDao implements CustomerDaoInter<Integer> {
 	}
 
 	@Override
-	public Integer getId(int num) {
+	public int getId(int num) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override
-	public Integer getId(String name) {
+	public int getId(String name) {
 		// TODO Auto-generated method stub
-		return null;
+		return 0;
 	}
 
 	@Override
-	public boolean isExists(Integer id) {
+	public boolean isExists(int id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -86,14 +86,15 @@ public class CustomerMysqlDao implements CustomerDaoInter<Integer> {
 	}
 
 	@Override
-	public boolean delWithId(Integer id) {
+	public boolean delWithId(int id) {
 		// TODO Auto-generated method stub
 		return false;
 	}
 
 	@Override
-	public Customer getWithId(Integer id) {
+	public Customer getWithId(int id) {
 		// TODO Auto-generated method stub
 		return null;
 	}
+
 }
