@@ -84,11 +84,7 @@ public class ProductListDao implements ProductDaoInter {
 	@Override
 	public boolean isExists(int id) {
 		// TODO Auto-generated method stub
-		if (id >= 0 && id < productlist.size()) {
-			return true;
-		} else {
-			return false;
-		}
+		return (id >= 0 && id < productlist.size());
 	}
 
 	@Override

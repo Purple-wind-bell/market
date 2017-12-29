@@ -84,10 +84,7 @@ public class CustomerListDao implements CustomerDaoInter {
 	@Override
 	public boolean isExists(int id) {
 		// TODO Auto-generated method stub
-		if (id >= 0 && id < customerlist.size()) {
-			return true;
-		}
-		return false;
+		return (id >= 0 && id < customerlist.size());
 	}
 
 	@Override
