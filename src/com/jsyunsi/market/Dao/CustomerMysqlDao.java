@@ -7,19 +7,40 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.Iterator;
+
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.utils.DBUtil;
 import com.jsyunsi.market.vo.Customer;
 
 public class CustomerMysqlDao implements CustomerDaoInter {
-	ArrayList<Customer> list = new ArrayList<>();
 	Connection connection;
 
 	@Override
 	public ArrayList<Customer> getList() {
 		// TODO Auto-generated method stub
-
-		return null;
+		ArrayList<Customer> list = new ArrayList<Customer>();
+		Customer customer;
+		String sql = "SELECT * FROM customer";
+		connection = DBUtil.getconnection();
+		ResultSet resultSet = null;
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				int cardNum = resultSet.getInt(1);
+				String name = resultSet.getString(2);
+				String phone = resultSet.getString(3);
+				customer = new Customer(cardNum, name, phone);
+				list.add(customer);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return list;
 	}
 
 	@Override
@@ -34,8 +55,6 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 			ResultSet rSet = statement.executeQuery(sql);
 			rSet.last();
 			amount = rSet.getRow();
-			rSet.close();
-			statement.close();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -159,7 +178,7 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		// TODO Auto-generated method stub
 		Customer customer = null;
 		ResultSet rSet = null;
-		String sql = "SELECT num FROM customer num = ?";
+		String sql = "SELECT cardNum FROM customer cardNum = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);

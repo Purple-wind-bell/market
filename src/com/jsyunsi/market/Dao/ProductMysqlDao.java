@@ -1,78 +1,202 @@
 package com.jsyunsi.market.Dao;
 
+import java.lang.reflect.Field;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
-
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
+import com.jsyunsi.market.utils.DBUtil;
 import com.jsyunsi.market.vo.Product;
 
 public class ProductMysqlDao implements ProductDaoInter {
+	private Connection connection;
 
 	@Override
 	public ArrayList<Product> getList() {
 		// TODO Auto-generated method stub
-		return null;
+		ArrayList<Product> list = new ArrayList<Product>();
+		Product product;
+		String sql = "SELECT * FROM product";
+		connection = DBUtil.getconnection();
+		ResultSet resultSet = null;
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			resultSet = ps.executeQuery();
+			while (resultSet.next()) {
+				int num = resultSet.getInt(1);
+				String name = resultSet.getString(2);
+				double price = resultSet.getDouble(3);
+				int stock = resultSet.getInt(4);
+				product = new Product(num, name, price, stock);
+				list.add(product);
+			}
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return list;
 	}
 
 	@Override
 	public int getAmount() {
 		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getId(int num) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public int getId(String name) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
-	@Override
-	public boolean isExists(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean add(Product t) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public boolean delWithId(int id) {
-		// TODO Auto-generated method stub
-		return false;
-	}
-
-	@Override
-	public Product getWithId(int id) {
-		// TODO Auto-generated method stub
-		return null;
+		int amount = 0;
+		String sql = "SELECT * FROM product";
+		connection = DBUtil.getconnection();
+		try {
+			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
+					ResultSet.CONCUR_UPDATABLE);
+			ResultSet rSet = statement.executeQuery(sql);
+			rSet.last();
+			amount = rSet.getRow();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return amount;
 	}
 
 	@Override
 	public boolean update(int id, Product t) {
 		// TODO Auto-generated method stub
-		return false;
+		int rows = 0;
+		connection = DBUtil.getconnection();
+		String sql = "UPDATE product SET num = ?, name =?, price = ?, stock =? WHERE num = ?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, t.getNum());
+			ps.setString(2, t.getName());
+			ps.setDouble(3, t.getPrice());
+			ps.setInt(4, t.getStock());
+			ps.setInt(5, id);
+			rows = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return rows > 0;
 	}
 
 	@Override
-	public boolean updateStock(int id, int stock) {
+	public int getId(int num) {
 		// TODO Auto-generated method stub
-		return false;
+		int rows = -1;
+		String sql = "SELECT * FROM product num = ?";
+		connection = DBUtil.getconnection();
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, num);
+			rows = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return rows > 0 ? num : -1;
 	}
 
 	@Override
-	public boolean updatePrice(int id, int price) {
+	public int getId(String name) {
 		// TODO Auto-generated method stub
-		return false;
+		int id = -1;
+		ResultSet resultSet = null;
+		String sql = "SELECT num FROM product name = ?";
+		connection = DBUtil.getconnection();
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setString(1, name);
+			resultSet = ps.executeQuery();// 获取结果集
+			Class<Product> c = Product.class;// 通过反射获取id所属列的字段名
+			Field[] field = c.getFields();
+			String numColumn = field[0].getName();
+			id = resultSet.getInt(numColumn);// 查询id
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return id > 0 ? id : -1;
 	}
 
+	@Override
+	public boolean isExists(int id) {
+		// TODO Auto-generated method stub
+		return id != -1;
+	}
 
+	@Override
+	public boolean add(Product t) {
+		// TODO Auto-generated method stub
+		int rows = 0;
+		connection = DBUtil.getconnection();
+		String sql = "INSERT product (?, ?, ?, ?)";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, t.getNum());
+			ps.setString(2, t.getName());
+			ps.setDouble(3, t.getPrice());
+			ps.setInt(4, t.getStock());
+			rows = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return rows > 0;
+	}
+
+	@Override
+	public boolean delWithId(int id) {
+		// TODO Auto-generated method stub
+		int rows = 0;
+		connection = DBUtil.getconnection();
+		String sql = "DELETE * FROM Product WHERE cardNum = ?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
+			rows = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return rows > 0;
+	}
+
+	@Override
+	public Product getWithId(int id) {
+		// TODO Auto-generated method stub
+		Product product = null;
+		ResultSet resultSet = null;
+		String sql = "SELECT num FROM Product num = ?";
+		connection = DBUtil.getconnection();
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
+			resultSet = ps.executeQuery();// 获取结果集
+			int num = resultSet.getInt(1);
+			String name = resultSet.getString(2);
+			double price = resultSet.getDouble(3);
+			int stock = resultSet.getInt(4);
+			product = new Product(num, name, price, stock);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return product;
+	}
 
 }

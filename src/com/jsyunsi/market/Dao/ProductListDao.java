@@ -126,30 +126,6 @@ public class ProductListDao implements ProductDaoInter {
 		return false;
 	}
 
-	@Override
-	public boolean updateStock(int id, int stock) {
-		// TODO Auto-generated method stub
-		if (isExists(id)) {
-			Product data = productlist.get(id);
-			data.setStock(stock);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
-	@Override
-	public boolean updatePrice(int id, int price) {
-		// TODO Auto-generated method stub
-		if (isExists(id)) {
-			Product data = productlist.get(id);
-			data.setPrice(price);
-			return true;
-		} else {
-			return false;
-		}
-	}
-
 	@SuppressWarnings("resource")
 	public boolean writeList() {
 		// TODO Auto-generated method stub
