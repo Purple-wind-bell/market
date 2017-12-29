@@ -1,5 +1,7 @@
 package com.jsyunsi.market.service;
 
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Scanner;
 import com.jsyunsi.market.Dao.CustomerListDao;
 import com.jsyunsi.market.Dao.CustomerMysqlDao;
@@ -44,6 +46,7 @@ public class CustomerService implements CustomerServiceInter {
 			try {
 				System.out.println("请输入客户卡号：");
 				num = scan.nextInt();
+				System.out.println(num);
 				t = false;
 			} catch (Exception e) {
 				// TODO: handle exception
@@ -56,9 +59,12 @@ public class CustomerService implements CustomerServiceInter {
 
 	@Override
 	public void showAll() {
+		ArrayList<Customer> list = custInter.getList();
 		System.out.println("卡号\t姓名\t手机");
-		for (int i = 0; i < custInter.getAmount(); i++) { // 遍历打印所有客户信息
-			System.out.println(custInter.getWithId(i).toString());
+		Iterator<Customer> iterator = list.iterator();
+		while (iterator.hasNext()) {// 遍历打印所有客户信息
+			Customer customer = (Customer) iterator.next();
+			System.out.println(customer.toString());
 		}
 	}
 

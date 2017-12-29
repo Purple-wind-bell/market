@@ -1,7 +1,5 @@
 package com.jsyunsi.market.Configure;
 
-import java.io.File;
-
 /**
  * 参数配置
  * 

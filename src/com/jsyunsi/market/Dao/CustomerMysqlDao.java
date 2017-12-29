@@ -1,6 +1,5 @@
 package com.jsyunsi.market.Dao;
 
-import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -84,22 +83,24 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 	}
 
 	@Override
-	public int getId(int num) {
+	public int getId(int cardNum) {
 		// TODO Auto-generated method stub
 		ResultSet resultSet = null;
-		String sql = "SELECT * FROM customer num = ?";
+		int id = -1;
+		String sql = "SELECT * FROM customer WHERE cardNum = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
-			ps.setInt(1, num);
+			ps.setInt(1, cardNum);
 			resultSet = ps.executeQuery();
+			id = resultSet.next() ? cardNum : -1;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtil.releaseConnection(connection);
 		}
-		return resultSet != null ? num : -1;
+		return id;
 	}
 
 	@Override
@@ -107,17 +108,15 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		// TODO Auto-generated method stub
 		int id = -1;
 		ResultSet resultSet = null;
-		String sql = "SELECT num FROM customer name = ?";
+		String sql = "SELECT * FROM customer WHERE name = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, name);
 			resultSet = ps.executeQuery();// 获取结果集
-			Class<Customer> class1 = Customer.class;// 通过反射获取id所属列的字段名
-			Field[] field = class1.getFields();
-			String cardNumColumn = field[0].getName();
-			resultSet.next();
-			id = resultSet.getInt(cardNumColumn);// 查询id
+			while (resultSet.next()) {
+				id = resultSet.getInt(1);// 查询id
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -136,7 +135,7 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		// TODO Auto-generated method stub
 		int rows = 0;
 		connection = DBUtil.getconnection();
-		String sql = "INSERT customer (?, ?, ?)";
+		String sql = "INSERT INTO customer VALUES(?, ?, ?)";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, t.getCardNum());
@@ -157,7 +156,7 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		// TODO Auto-generated method stub
 		int rows = 0;
 		connection = DBUtil.getconnection();
-		String sql = "DELETE * FROM customer WHERE cardNum = ?";
+		String sql = "DELETE  FROM customer WHERE cardNum = ?";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
@@ -176,14 +175,13 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		// TODO Auto-generated method stub
 		Customer customer = null;
 		ResultSet resultSet = null;
-		String sql = "SELECT cardNum FROM customer cardNum = ?";
+		String sql = "SELECT * FROM customer WHERE cardNum = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
 			resultSet = ps.executeQuery();// 获取结果集
-			if (resultSet != null) {
-				resultSet.next();
+			while (resultSet.next()) {
 				int cardNum = resultSet.getInt(1);
 				String name = resultSet.getString(2);
 				String phone = resultSet.getString(3);

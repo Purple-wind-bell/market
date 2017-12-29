@@ -90,19 +90,21 @@ public class ProductMysqlDao implements ProductDaoInter {
 	public int getId(int num) {
 		// TODO Auto-generated method stub
 		ResultSet resultSet = null;
-		String sql = "SELECT * FROM product num = ?";
+		int id = -1;
+		String sql = "SELECT * FROM product WHERE num = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, num);
 			resultSet = ps.executeQuery();
+			id = resultSet.next() ? num : -1;
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtil.releaseConnection(connection);
 		}
-		return resultSet != null ? num : -1;
+		return id;
 	}
 
 	@Override
@@ -110,17 +112,15 @@ public class ProductMysqlDao implements ProductDaoInter {
 		// TODO Auto-generated method stub
 		int id = -1;
 		ResultSet resultSet = null;
-		String sql = "SELECT num FROM product name = ?";
+		String sql = "SELECT * FROM product WHERE name = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, name);
 			resultSet = ps.executeQuery();// 获取结果集
-			Class<Product> c = Product.class;// 通过反射获取id所属列的字段名
-			Field[] field = c.getFields();
-			String numColumn = field[0].getName();
-			resultSet.next();
-			id = resultSet.getInt(numColumn);// 查询id
+			while (resultSet.next()) {
+				id = resultSet.getInt(1);// 查询id
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -139,7 +139,7 @@ public class ProductMysqlDao implements ProductDaoInter {
 		// TODO Auto-generated method stub
 		int rows = 0;
 		connection = DBUtil.getconnection();
-		String sql = "INSERT product (?, ?, ?, ?)";
+		String sql = "INSERT INTO product VALUES(?, ?, ?, ?)";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, t.getNum());
@@ -161,7 +161,7 @@ public class ProductMysqlDao implements ProductDaoInter {
 		// TODO Auto-generated method stub
 		int rows = 0;
 		connection = DBUtil.getconnection();
-		String sql = "DELETE * FROM Product WHERE cardNum = ?";
+		String sql = "DELETE FROM Product WHERE cardNum = ?";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
@@ -180,18 +180,19 @@ public class ProductMysqlDao implements ProductDaoInter {
 		// TODO Auto-generated method stub
 		Product product = null;
 		ResultSet resultSet = null;
-		String sql = "SELECT num FROM Product num = ?";
+		String sql = "SELECT * FROM Product WHERE num = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);
 			resultSet = ps.executeQuery();// 获取结果集
-			resultSet.next();
-			int num = resultSet.getInt(1);
-			String name = resultSet.getString(2);
-			double price = resultSet.getDouble(3);
-			int stock = resultSet.getInt(4);
-			product = new Product(num, name, price, stock);
+			while (resultSet.next()) {
+				int num = resultSet.getInt(1);
+				String name = resultSet.getString(2);
+				double price = resultSet.getDouble(3);
+				int stock = resultSet.getInt(4);
+				product = new Product(num, name, price, stock);
+			}
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

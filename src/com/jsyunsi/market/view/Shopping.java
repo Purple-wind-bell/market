@@ -1,7 +1,6 @@
 package com.jsyunsi.market.view;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.Scanner;
 import com.jsyunsi.market.Dao.ProductMysqlDao;
 import com.jsyunsi.market.DaoInter.ProductDaoInter;
@@ -141,13 +140,6 @@ public class Shopping {
 	 * 输入商品信息
 	 */
 	private void inputProduct() {
-		System.out.println("商品编号\t商品名称\t\t商品价格\t\t商品库存");// 打印所有商品信息
-		ArrayList<Product> prolist = productDaoInter.getList();
-		Iterator<Product> iterator = prolist.iterator();
-		while (iterator.hasNext()) {
-			Product product = iterator.next();
-			System.out.println(product.toString());
-		}
 		flag = true;
 		while (flag) {
 			System.out.println("请输入商品编号：");// 结算商品输入
@@ -159,6 +151,7 @@ public class Shopping {
 					System.out.println("商品信息：\t" + "编号\t" + "名称\t" + "价格\t");
 					System.out.println(p.toString());// 打印商品信息
 					list.add(p);// 将结算商品添加到结算目录
+					flag = false;
 				} else {
 					System.out.println("商品不存在!");// 商品不存在则重新输入商品信息
 					flag = this.goNext();

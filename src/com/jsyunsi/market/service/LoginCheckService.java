@@ -27,10 +27,9 @@ public class LoginCheckService implements CheckServiceInter {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setString(1, user);
 			resultSet = ps.executeQuery();
-			if (resultSet == null) {
+			if (!resultSet.next()) {
 				status = 1;// 用户不存在
 			} else {
-				resultSet.next();
 				String password = resultSet.getString(2);
 				if (password.equals(passwd)) {
 					status = 3;// 密码正确
