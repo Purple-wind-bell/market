@@ -7,7 +7,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
-
 import com.jsyunsi.market.DaoInter.CustomerDaoInter;
 import com.jsyunsi.market.utils.DBUtil;
 import com.jsyunsi.market.vo.Customer;
@@ -71,20 +70,20 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 	@Override
 	public int getId(int num) {
 		// TODO Auto-generated method stub
-		int id = -1;
-		String sql = "SELECT num FROM customer num = ?";
+		int rows = -1;
+		String sql = "SELECT * FROM customer num = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, num);
-			id = ps.executeUpdate();
+			rows = ps.executeUpdate();
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		} finally {
 			DBUtil.releaseConnection(connection);
 		}
-		return id > 0 ? num : -1;
+		return rows > 0 ? num : -1;
 	}
 
 	@Override
@@ -106,7 +105,7 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		return id;
+		return id > 0 ? id : -1;
 	}
 
 	@Override
@@ -118,20 +117,65 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 	@Override
 	public boolean add(Customer t) {
 		// TODO Auto-generated method stub
-		
-		return false;
+		int rows = 0;
+		connection = DBUtil.getconnection();
+		String sql = "INSERT customer (?, ?, ?)";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, t.getCardNum());
+			ps.setString(2, t.getName());
+			ps.setString(3, t.getPhone());
+			rows = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return rows > 0;
 	}
 
 	@Override
 	public boolean delWithId(int id) {
 		// TODO Auto-generated method stub
-		return false;
+		int rows = 0;
+		connection = DBUtil.getconnection();
+		String sql = "DELETE * FROM customer WHERE cardNum = ?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
+			rows = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return rows > 0;
 	}
 
 	@Override
 	public Customer getWithId(int id) {
 		// TODO Auto-generated method stub
-		return null;
+		Customer customer = null;
+		ResultSet rSet = null;
+		String sql = "SELECT num FROM customer num = ?";
+		connection = DBUtil.getconnection();
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, id);
+			rSet = ps.executeQuery();// 获取结果集
+			int cardNum = rSet.getInt(1);
+			String name = rSet.getString(2);
+			String phone = rSet.getString(3);
+			customer = new Customer(cardNum, name, phone);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return customer;
 	}
 
 }
