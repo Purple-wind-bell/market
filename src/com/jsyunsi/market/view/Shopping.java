@@ -147,10 +147,10 @@ public class Shopping {
 				int num = scan.nextInt();// 商品编号
 				int id = productDaoInter.getId(num);
 				if (productDaoInter.isExists(id)) {// 商品是否存在等信息查询及输出
-					Product p = productDaoInter.getWithId(id);
+					Product p1 = productDaoInter.getWithId(id);
 					System.out.println("商品信息：\t" + "编号\t" + "名称\t" + "价格\t");
-					System.out.println(p.toString());// 打印商品信息
-					list.add(p);// 将结算商品添加到结算目录
+					System.out.println(p1.toString());// 打印商品信息
+					list.add(p1);// 将结算商品添加到结算目录
 					flag = false;
 				} else {
 					System.out.println("商品不存在!");// 商品不存在则重新输入商品信息
