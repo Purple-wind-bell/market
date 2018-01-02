@@ -201,4 +201,24 @@ public class ProductMysqlDao implements ProductDaoInter {
 		return product;
 	}
 
+	@Override
+	public boolean updateStock(int id, int stock) {
+		// TODO Auto-generated method stub
+		int rows = 0;
+		connection = DBUtil.getconnection();
+		String sql = "UPDATE product SET stock =? WHERE num = ?";
+		try {
+			PreparedStatement ps = connection.prepareStatement(sql);
+			ps.setInt(1, stock);
+			ps.setInt(2, id);
+			rows = ps.executeUpdate();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} finally {
+			DBUtil.releaseConnection(connection);
+		}
+		return rows > 0;
+	}
+
 }

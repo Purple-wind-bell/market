@@ -158,4 +158,11 @@ public class ProductListDao implements ProductDaoInter {
 		}
 
 	}
+
+	@Override
+	public boolean updateStock(int id, int stock) {
+		// TODO Auto-generated method stub
+		productlist.get(id).setStock(stock);
+		return true;
+	}
 }
