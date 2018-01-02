@@ -44,7 +44,7 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 	public int getAmount() {
 		// TODO Auto-generated method stub
 		int amount = 0;
-		String sql = "SELECT * FROM customer";
+		String sql = "SELECT cardNum FROM customer";
 		connection = DBUtil.getconnection();
 		try {
 			Statement statement = connection.createStatement();
@@ -87,7 +87,7 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		// TODO Auto-generated method stub
 		ResultSet resultSet = null;
 		int id = -1;
-		String sql = "SELECT * FROM customer WHERE cardNum = ?";
+		String sql = "SELECT cardNum FROM customer WHERE cardNum = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
@@ -108,7 +108,7 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		// TODO Auto-generated method stub
 		int id = -1;
 		ResultSet resultSet = null;
-		String sql = "SELECT * FROM customer WHERE name = ?";
+		String sql = "SELECT cardNum FROM customer WHERE name = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
@@ -156,7 +156,7 @@ public class CustomerMysqlDao implements CustomerDaoInter {
 		// TODO Auto-generated method stub
 		int rows = 0;
 		connection = DBUtil.getconnection();
-		String sql = "DELETE  FROM customer WHERE cardNum = ?";
+		String sql = "DELETE FROM customer WHERE cardNum = ?";
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
 			ps.setInt(1, id);

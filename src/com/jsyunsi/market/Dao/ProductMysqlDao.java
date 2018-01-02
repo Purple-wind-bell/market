@@ -1,6 +1,5 @@
 package com.jsyunsi.market.Dao;
 
-import java.lang.reflect.Field;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -46,7 +45,7 @@ public class ProductMysqlDao implements ProductDaoInter {
 	public int getAmount() {
 		// TODO Auto-generated method stub
 		int amount = 0;
-		String sql = "SELECT * FROM product";
+		String sql = "SELECT num FROM product";
 		connection = DBUtil.getconnection();
 		try {
 			Statement statement = connection.createStatement(ResultSet.TYPE_SCROLL_INSENSITIVE,
@@ -91,7 +90,7 @@ public class ProductMysqlDao implements ProductDaoInter {
 		// TODO Auto-generated method stub
 		ResultSet resultSet = null;
 		int id = -1;
-		String sql = "SELECT * FROM product WHERE num = ?";
+		String sql = "SELECT num FROM product WHERE num = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
@@ -112,7 +111,7 @@ public class ProductMysqlDao implements ProductDaoInter {
 		// TODO Auto-generated method stub
 		int id = -1;
 		ResultSet resultSet = null;
-		String sql = "SELECT * FROM product WHERE name = ?";
+		String sql = "SELECT num FROM product WHERE name = ?";
 		connection = DBUtil.getconnection();
 		try {
 			PreparedStatement ps = connection.prepareStatement(sql);
